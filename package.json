@@ -1,0 +1,27 @@
+{
+  "name": "@7nohe/laravel-typegen",
+  "version": "0.0.1",
+  "description": "The library lets you generate TypeScript types from your Laravel models.",
+  "bin": {
+    "laravel-typegen": "dist/src/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "keywords": [
+    "laravel",
+    "typegen",
+    "typescript"
+  ],
+  "author": "Daiki Urata (@7nohe)",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/glob": "^8.0.0",
+    "@types/node": "^18.11.9"
+  },
+  "dependencies": {
+    "commander": "^9.4.1",
+    "glob": "^8.0.3",
+    "typescript": "^4.9.3"
+  }
+}

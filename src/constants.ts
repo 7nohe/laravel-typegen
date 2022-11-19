@@ -1,0 +1,1 @@
+export const defaultOutputPath = 'resources/ts/types';
