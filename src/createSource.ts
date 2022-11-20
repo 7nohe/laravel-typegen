@@ -1,15 +1,16 @@
 import ts from "typescript";
+import { createEnumTypes } from "./createEnumTypes";
 import { createTypes } from "./createTypes";
 import { LaravelModelType } from "./types";
-const createSourceFile = (modelData: LaravelModelType[]) => {
+const createSourceFile = (modelData: LaravelModelType[], enums: string[]) => {
   return ts.factory.createSourceFile(
-    [...createTypes(modelData)],
+    [...createTypes(modelData), ...createEnumTypes(enums)],
     ts.factory.createToken(ts.SyntaxKind.EndOfFileToken),
     ts.NodeFlags.None
   );
 };
 
-export const createSource = (modelData: LaravelModelType[]) => {
+export const createSource = (modelData: LaravelModelType[], enums: string[]) => {
   const resultFile = ts.createSourceFile(
     "model.ts",
     "",
@@ -21,7 +22,7 @@ export const createSource = (modelData: LaravelModelType[]) => {
 
   const result = printer.printNode(
     ts.EmitHint.Unspecified,
-    createSourceFile(modelData),
+    createSourceFile(modelData, enums),
     resultFile
   );
 

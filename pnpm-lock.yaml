@@ -5,11 +5,13 @@ specifiers:
   '@types/node': ^18.11.9
   commander: ^9.4.1
   glob: ^8.0.3
+  php-parser: ^3.1.2
   typescript: ^4.9.3
 
 dependencies:
   commander: 9.4.1
   glob: 8.0.3
+  php-parser: 3.1.2
   typescript: 4.9.3
 
 devDependencies:
@@ -85,6 +87,10 @@ packages:
     resolution: {integrity: sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==}
     dependencies:
       wrappy: 1.0.2
+    dev: false
+
+  /php-parser/3.1.2:
+    resolution: {integrity: sha512-RRCMK/bCKYPLRhlpfMlVVVsaIesuW+X6UxRqWjm7dTAmTZk8PvD6hCmG/RVeDzse7iqYWJwLJeqEbaGLC+aHeQ==}
     dev: false
 
   /typescript/4.9.3:

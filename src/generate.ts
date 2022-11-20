@@ -5,11 +5,13 @@ import glob from "glob";
 import fs from "fs";
 import { execSync } from "child_process";
 import { LaravelModelType } from "./types";
+import { defaultEnumPath, defaultModelPath } from "./constants";
 
 const tmpDir = "./.laravel-typegen-tmp";
 export async function generate(options: CLIOptions) {
-  const models = glob.sync(`app/Models/*.php`);
+  const models = glob.sync(`${defaultModelPath}/*.php`);
   const modelData: LaravelModelType[] = [];
+  const enums = glob.sync(`${defaultEnumPath}/*.php`);
   if (!fs.existsSync(tmpDir)) {
     fs.mkdirSync(tmpDir);
   }
@@ -18,13 +20,12 @@ export async function generate(options: CLIOptions) {
     const modelShowCommand = `php artisan model:show ${modelName} --json > ${tmpDir}/${modelName}.json`;
     console.log(modelShowCommand);
     execSync(modelShowCommand);
-    console.log(`${modelName}.json was created successfully`);
     const modelJson = JSON.parse(
       fs.readFileSync(`${tmpDir}/${modelName}.json`, "utf8")
     ) as LaravelModelType;
     modelData.push(modelJson);
   }
   fs.rmSync(tmpDir, { recursive: true });
-  const source = createSource(modelData);
+  const source = createSource(modelData, enums);
   print(source, options);
 }

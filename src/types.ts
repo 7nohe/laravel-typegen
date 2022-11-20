@@ -37,7 +37,7 @@ type CastType =
   | null
   | string; // "decimal:<precision>"
 
-type Attribute = {
+export type Attribute = {
   name: string;
   type: ColumnType;
   increments: boolean;

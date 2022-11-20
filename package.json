@@ -22,6 +22,7 @@
   "dependencies": {
     "commander": "^9.4.1",
     "glob": "^8.0.3",
+    "php-parser": "^3.1.2",
     "typescript": "^4.9.3"
   }
 }

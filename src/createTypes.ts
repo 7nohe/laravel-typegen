@@ -1,5 +1,6 @@
-import ts from "typescript";
-import { ColumnType, LaravelModelType, Relation } from "./types";
+import ts, { TypeNode } from "typescript";
+import { isEnum } from "./createEnumTypes";
+import { Attribute, ColumnType, LaravelModelType, Relation } from "./types";
 
 type TSModelKeyword = ts.SyntaxKind.NumberKeyword | ts.SyntaxKind.StringKeyword;
 
@@ -57,35 +58,49 @@ const getClassName = (namespace: string) => {
   return namespace.split("\\").at(-1);
 };
 
+const createAttributeType = (attribute: Attribute) => {
+  let node: TypeNode = ts.factory.createKeywordTypeNode(getKeywordType(attribute.type));
+
+  if (attribute.cast && isEnum(attribute)) {
+    // Create enum type node
+    node = ts.factory.createTypeReferenceNode(
+        ts.factory.createIdentifier(attribute.cast.split("\\").at(-1)!),
+        undefined
+      )
+  }
+
+  return ts.factory.createPropertySignature(
+    undefined,
+    ts.factory.createIdentifier(attribute.name),
+    attribute.nullable
+      ? ts.factory.createToken(ts.SyntaxKind.QuestionToken)
+      : undefined,
+    node
+  );
+};
+
 export const createTypes = (modelData: LaravelModelType[]) => {
   const modelNames = modelData.map((data) => data.class);
   return modelData.map((model) =>
-    ts.factory.createTypeAliasDeclaration(
-      [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
-      ts.factory.createIdentifier(getClassName(model.class)!),
-      undefined,
-      ts.factory.createTypeLiteralNode([
-        ...model.attributes.map((attribute) =>
-          ts.factory.createPropertySignature(
-            undefined,
-            ts.factory.createIdentifier(attribute.name),
-            attribute.nullable
-              ? ts.factory.createToken(ts.SyntaxKind.QuestionToken)
-              : undefined,
-            ts.factory.createKeywordTypeNode(getKeywordType(attribute.type))
-          )
-        ),
-        ...model.relations
-          .filter((relation) => modelNames.includes(relation.related))
-          .map((relation) =>
-            ts.factory.createPropertySignature(
-              undefined,
-              ts.factory.createIdentifier(relation.name),
-              ts.factory.createToken(ts.SyntaxKind.QuestionToken),
-              getRelationNode(relation)
-            )
+      ts.factory.createTypeAliasDeclaration(
+        [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
+        ts.factory.createIdentifier(getClassName(model.class)!),
+        undefined,
+        ts.factory.createTypeLiteralNode([
+          ...model.attributes.map((attribute) =>
+            createAttributeType(attribute)
           ),
-      ])
-    )
-  );
+          ...model.relations
+            .filter((relation) => modelNames.includes(relation.related))
+            .map((relation) =>
+              ts.factory.createPropertySignature(
+                undefined,
+                ts.factory.createIdentifier(relation.name),
+                ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                getRelationNode(relation)
+              )
+            ),
+        ])
+      )
+    );
 };
