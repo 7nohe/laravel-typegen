@@ -6,8 +6,19 @@
     "laravel-typegen": "dist/src/cli.js"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "pnpm run build",
+    "release": "npx git-ensure -a && npx bumpp --commit --tag --push"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/7nohe/laravel-typegen.git"
+  },
+  "homepage": "https://github.com/7nohe/laravel-typegen",
+  "bugs": "https://github.com/7nohe/laravel-typegen/issues",
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "laravel",
     "typegen",
