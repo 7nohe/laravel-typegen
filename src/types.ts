@@ -1,13 +1,18 @@
-type Relation = {
+export type Relation = {
   name: string;
-  type: "MorphMany";
+  type:
+    | "MorphMany"
+    | "HasMany"
+    | "BelongsToMany"
+    | "HasManyThrough"
+    | "BelongsTo"
+    | "HasOne"
+    | "MorphOne"
+    | "HasOneThrough";
   related: string;
 };
 
-export type ColumnType = 
-  | "bigint unsigned" 
-  | "datetime" 
-  | string; // "string(n)"
+export type ColumnType = "bigint unsigned" | "datetime" | string; // "string(n)"
 
 type CastType =
   | "array"

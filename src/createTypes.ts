@@ -1,5 +1,5 @@
 import ts from "typescript";
-import { ColumnType, LaravelModelType } from "./types";
+import { ColumnType, LaravelModelType, Relation } from "./types";
 
 type TSModelKeyword = ts.SyntaxKind.NumberKeyword | ts.SyntaxKind.StringKeyword;
 
@@ -19,22 +19,73 @@ const getKeywordType = (columnType: ColumnType) => {
   return ts.SyntaxKind.AnyKeyword;
 };
 
+const manyRelations: Relation["type"][] = [
+  "HasMany",
+  "MorphMany",
+  "HasManyThrough",
+];
+const oneRlations: Relation["type"][] = [
+  "HasOne",
+  "MorphOne",
+  "HasOneThrough",
+  "BelongsTo",
+];
+
+const getRelationNode = (relation: Relation) => {
+  // many relation
+  if (manyRelations.includes(relation.type)) {
+    return ts.factory.createArrayTypeNode(
+      ts.factory.createTypeReferenceNode(
+        ts.factory.createIdentifier(getClassName(relation.related)!),
+        undefined
+      )
+    );
+  }
+
+  // one relation
+  if (oneRlations.includes(relation.type)) {
+    return ts.factory.createTypeReferenceNode(
+      ts.factory.createIdentifier(getClassName(relation.related)!),
+      undefined
+    );
+  }
+
+  return ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword);
+};
+
+const getClassName = (namespace: string) => {
+  return namespace.split("\\").at(-1);
+};
+
 export const createTypes = (modelData: LaravelModelType[]) => {
+  const modelNames = modelData.map((data) => data.class);
   return modelData.map((model) =>
     ts.factory.createTypeAliasDeclaration(
       [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
-      ts.factory.createIdentifier(model.class.split("\\").at(-1)!),
+      ts.factory.createIdentifier(getClassName(model.class)!),
       undefined,
-      ts.factory.createTypeLiteralNode(
-        model.attributes.map((attribute) =>
+      ts.factory.createTypeLiteralNode([
+        ...model.attributes.map((attribute) =>
           ts.factory.createPropertySignature(
             undefined,
             ts.factory.createIdentifier(attribute.name),
-            undefined,
+            attribute.nullable
+              ? ts.factory.createToken(ts.SyntaxKind.QuestionToken)
+              : undefined,
             ts.factory.createKeywordTypeNode(getKeywordType(attribute.type))
           )
-        )
-      )
+        ),
+        ...model.relations
+          .filter((relation) => modelNames.includes(relation.related))
+          .map((relation) =>
+            ts.factory.createPropertySignature(
+              undefined,
+              ts.factory.createIdentifier(relation.name),
+              ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+              getRelationNode(relation)
+            )
+          ),
+      ])
     )
   );
 };
