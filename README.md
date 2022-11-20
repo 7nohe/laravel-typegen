@@ -8,8 +8,17 @@ $ npm install -D @7nohe/laravel-typegen
 
 ## Usage
 
+Edit package.json
+```json
+{
+    "scripts": {
+        "typegen": "laravel-typegen"
+    },
+}
+```
+
 ```bash
-$ npm run laravel-typegen
+$ npm run typegen
 ```
 
 ## Development

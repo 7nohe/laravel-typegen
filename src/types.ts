@@ -12,7 +12,12 @@ export type Relation = {
   related: string;
 };
 
-export type ColumnType = "bigint unsigned" | "datetime" | string; // "string(n)"
+export type ColumnType =
+  | "bigint unsigned"
+  | "bigint"
+  | "datetime"
+  | "date"
+  | string; // "string(n)"
 
 type CastType =
   | "array"
