@@ -11,7 +11,10 @@ const keywordTypeDictionary: Record<ColumnType, TSModelKeyword> = {
   date: ts.SyntaxKind.StringKeyword,
 };
 
-const getKeywordType = (columnType: ColumnType) => {
+const getKeywordType = (columnType: ColumnType | null) => {
+  if (!columnType) {
+    return ts.SyntaxKind.AnyKeyword;  
+  }
   const keywordType = keywordTypeDictionary[columnType];
   if (keywordType) return keywordType;
 
