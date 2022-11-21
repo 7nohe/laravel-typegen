@@ -2,16 +2,9 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-/**
- * @method static static Male()
- * @method static static Female()
- * @method static static Other()
- */
-final class GenderType extends Enum
+enum GenderType: string
 {
-    const Male = 'Male';
-    const Female = 'Female';
-    const Other = 'Other';
+    case Male = 'Male';
+    case Female = 'Female';
+    case Other = 'Other';
 }

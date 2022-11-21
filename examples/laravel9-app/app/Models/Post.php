@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PostType;
+// use App\LaravelEnums\PostType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

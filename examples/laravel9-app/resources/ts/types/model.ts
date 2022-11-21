@@ -14,8 +14,6 @@ export type User = {
     email: string;
     gender: GenderType;
     email_verified_at?: string;
-    password: string;
-    remember_token?: string;
     created_at?: string;
     updated_at?: string;
     posts?: Post[];
