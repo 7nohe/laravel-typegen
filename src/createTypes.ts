@@ -1,5 +1,5 @@
 import ts, { TypeNode } from "typescript";
-import { isEnum } from "./createEnumTypes";
+import { isEnum } from "./utils";
 import { Attribute, ColumnType, LaravelModelType, Relation } from "./types";
 
 type TSModelKeyword = ts.SyntaxKind.NumberKeyword | ts.SyntaxKind.StringKeyword;
@@ -91,7 +91,9 @@ export const createTypes = (modelData: LaravelModelType[]) => {
       ts.factory.createIdentifier(getClassName(model.class)!),
       undefined,
       ts.factory.createTypeLiteralNode([
-        ...model.attributes.map((attribute) => createAttributeType(attribute)),
+        ...model.attributes
+          .filter((attribute) => !attribute.hidden)
+          .map((attribute) => createAttributeType(attribute)),
         ...model.relations
           .filter((relation) => modelNames.includes(relation.related))
           .map((relation) =>

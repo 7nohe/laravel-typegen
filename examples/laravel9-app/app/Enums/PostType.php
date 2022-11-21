@@ -2,14 +2,8 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-/**
- * @method static static Public()
- * @method static static Private()
- */
-final class PostType extends Enum
+enum PostType: int
 {
-    const Public = 10;
-    const Private = 20;
+    case Public = 10;
+    case Private = 20;
 }

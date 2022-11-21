@@ -11,7 +11,7 @@ const tmpDir = "./.laravel-typegen-tmp";
 export async function generate(options: CLIOptions) {
   const models = glob.sync(`${defaultModelPath}/*.php`);
   const modelData: LaravelModelType[] = [];
-  const enums = glob.sync(`${defaultEnumPath}/*.php`);
+  const enums = glob.sync(`${options.enumPath ?? defaultEnumPath}/*.php`);
   if (!fs.existsSync(tmpDir)) {
     fs.mkdirSync(tmpDir);
   }
@@ -26,6 +26,6 @@ export async function generate(options: CLIOptions) {
     modelData.push(modelJson);
   }
   fs.rmSync(tmpDir, { recursive: true });
-  const source = createSource(modelData, enums);
+  const source = createSource(modelData, enums, options);
   print(source, options);
 }

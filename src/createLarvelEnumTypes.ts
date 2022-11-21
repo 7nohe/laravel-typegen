@@ -1,8 +1,9 @@
 import ts from "typescript";
 import {
   Class,
+  ClassConstant,
+  Constant,
   Engine,
-  EnumCase,
   Identifier,
   Namespace,
   Number,
@@ -12,14 +13,14 @@ import fs from "fs";
 
 const parser = new Engine({});
 
-const getInitializer = (enumcase: EnumCase) => {
-  const numberValue = enumcase.value as unknown as Number;
+const getInitializer = (constant: Constant) => {
+  const numberValue = constant.value as Number;
   if (numberValue.kind === "number") {
     return ts.factory.createNumericLiteral(numberValue.value);
   }
 
   return ts.factory.createStringLiteral(
-    (enumcase.value as unknown as String).value
+    (constant.value as unknown as String).value
   );
 };
 
@@ -35,32 +36,34 @@ export const createEnumType = (enumFilePath: string) => {
     (child) => child.kind === "namespace"
   ) as Namespace;
 
-  // find enum Block
-  const enumBlock = namespace.children.find(
-    (child) => child.kind === "enum"
+  // find Class Block
+  const classBlock = namespace.children.find(
+    (child) => child.kind === "class"
   ) as Class;
 
-  const enumName = (enumBlock.name as Identifier).name;
+  const className = (classBlock.name as Identifier).name;
 
-  // get EnumCases
-  const enumcases = enumBlock.body.filter(
-    (declaration) => declaration.kind === "enumcase"
-  ) as unknown as EnumCase[];
+  // get Constants
+  const constants = (
+    classBlock.body.filter(
+      (declaration) => declaration.kind === "classconstant"
+    ) as unknown as ClassConstant[]
+  ).map((declaration) => declaration.constants.at(0)) as Constant[];
 
   return ts.factory.createEnumDeclaration(
     undefined,
-    ts.factory.createIdentifier(enumName),
-    enumcases.map((enumcase) =>
+    ts.factory.createIdentifier(className),
+    constants.map((constant) =>
       ts.factory.createEnumMember(
         ts.factory.createIdentifier(
-          (enumcase.name as unknown as Identifier).name
+          (constant.name as unknown as Identifier).name
         ),
-        getInitializer(enumcase)
+        getInitializer(constant)
       )
     )
   );
 };
 
-export const createEnumTypes = (enumFilePaths: string[]) => {
+export const createLaravelEnumTypes = (enumFilePaths: string[]) => {
   return enumFilePaths.map((path) => createEnumType(path));
 };
