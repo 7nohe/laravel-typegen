@@ -2,18 +2,23 @@ import ts, { TypeNode } from "typescript";
 import { isEnum } from "./utils";
 import { Attribute, ColumnType, LaravelModelType, Relation } from "./types";
 
-type TSModelKeyword = ts.SyntaxKind.NumberKeyword | ts.SyntaxKind.StringKeyword;
+type TSModelKeyword =
+  | ts.SyntaxKind.NumberKeyword
+  | ts.SyntaxKind.StringKeyword
+  | ts.SyntaxKind.BooleanKeyword;
 
 const keywordTypeDictionary: Record<ColumnType, TSModelKeyword> = {
   "bigint unsigned": ts.SyntaxKind.NumberKeyword,
   bigint: ts.SyntaxKind.NumberKeyword,
+  integer: ts.SyntaxKind.NumberKeyword,
+  boolean: ts.SyntaxKind.BooleanKeyword,
   datetime: ts.SyntaxKind.StringKeyword,
   date: ts.SyntaxKind.StringKeyword,
 };
 
 const getKeywordType = (columnType: ColumnType | null) => {
   if (!columnType) {
-    return ts.SyntaxKind.AnyKeyword;  
+    return ts.SyntaxKind.AnyKeyword;
   }
   const keywordType = keywordTypeDictionary[columnType];
   if (keywordType) return keywordType;
@@ -29,6 +34,7 @@ const manyRelations: Relation["type"][] = [
   "HasMany",
   "MorphMany",
   "HasManyThrough",
+  "BelongsToMany",
 ];
 const oneRlations: Relation["type"][] = [
   "HasOne",
@@ -68,6 +74,15 @@ const createAttributeType = (attribute: Attribute) => {
     getKeywordType(attribute.type)
   );
 
+  // Blob type
+  if (attribute.type === "blob") {
+    node = ts.factory.createTypeReferenceNode(
+      ts.factory.createIdentifier("Blob"),
+      undefined
+    );
+  }
+
+  // Enum type
   if (attribute.cast && isEnum(attribute)) {
     // Create enum type node
     node = ts.factory.createTypeReferenceNode(
