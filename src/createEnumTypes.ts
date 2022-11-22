@@ -48,7 +48,7 @@ export const createEnumType = (enumFilePath: string) => {
   ) as unknown as EnumCase[];
 
   return ts.factory.createEnumDeclaration(
-    undefined,
+    [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
     ts.factory.createIdentifier(enumName),
     enumcases.map((enumcase) =>
       ts.factory.createEnumMember(
