@@ -28,19 +28,64 @@ Edit package.json
 $ npm run typegen
 ```
 
-### Available options
+### Enum Support
 
-```bash
-Usage: laravel-typegen [options]
+We also support php8.1 enums.
 
-Generate TypeScript types from your Laravel models
+```php
+<!-- app/Enums/GenderType.php -->
+<?php
 
-Options:
-  -V, --version         output the version number
-  -o, --output <value>  Output directory (default: "resources/ts/types")
-  --laravel-enum        Use Laravel Enum (default: false)
-  --enum-path <value>   Path to enum files (default: "app/Enums")
-  -h, --help            display help for command
+namespace App\Enums;
+
+enum GenderType: string
+{
+    case Male = 'Male';
+    case Female = 'Female';
+    case Other = 'Other';
+}
+```
+
+Then, cast model attributes to enums.
+
+```php
+<!-- app/Models/User.php -->
+<?php
+
+namespace App\Models;
+use App\Enums\GenderType;
+
+class User extends Authenticatable
+{
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'gender'            => GenderType::class,
+    ];
+}
+```
+
+This library will generate the following TypeScript types:
+
+```typescript
+export type User = {
+    id: number;
+    name: string;
+    email: string;
+    gender: GenderType;
+    email_verified_at?: string;
+    created_at?: string;
+    updated_at?: string;
+    posts?: Post[];
+};
+export enum GenderType {
+    Male = "Male",
+    Female = "Female",
+    Other = "Other"
+}
 ```
 
 ### Laravel Enum Support
@@ -53,6 +98,21 @@ If you use (Laravel Enum)[https://github.com/BenSampo/laravel-enum], use the opt
         "typegen": "laravel-typegen --laravel-enum"
     },
 }
+```
+
+## Available options
+
+```bash
+Usage: laravel-typegen [options]
+
+Generate TypeScript types from your Laravel models
+
+Options:
+  -V, --version         output the version number
+  -o, --output <value>  Output directory (default: "resources/ts/types")
+  --laravel-enum        Use Laravel Enum (default: false)
+  --enum-path <value>   Path to enum files (default: "app/Enums")
+  -h, --help            display help for command
 ```
 
 

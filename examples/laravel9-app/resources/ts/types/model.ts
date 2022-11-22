@@ -18,12 +18,12 @@ export type User = {
     updated_at?: string;
     posts?: Post[];
 };
-enum GenderType {
+export enum GenderType {
     Male = "Male",
     Female = "Female",
     Other = "Other"
 }
-enum PostType {
+export enum PostType {
     Public = 10,
     Private = 20
 }
