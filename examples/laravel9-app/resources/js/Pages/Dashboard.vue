@@ -1,9 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/inertia-vue3';
+import { Head, Link } from '@inertiajs/inertia-vue3';
+import { Paginate } from '@7nohe/laravel-typegen';
+import { User } from '@/types/model';
+
+defineProps<{ users: Paginate<User> }>();
+
 </script>
 
 <template>
+
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
@@ -13,8 +19,15 @@ import { Head } from '@inertiajs/inertia-vue3';
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">You're logged in!</div>
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-12">
+                    <ul>
+                        <li v-for="user in users.data">- {{ user.name }}({{ user.email }})</li>
+                    </ul>
+                    <div v-if="users.links.length > 3" class="flex justify-center mt-4 space-x-4">
+                        <Link v-for="(link, k) in users.links" :key="k"
+                            class="px-4 py-3 text-sm leading-4 bg-white rounded hover:bg-white focus:text-indigo-500 hover:shadow"
+                            :class="{ 'bg-indigo-400 text-white': link.active }" :href="link.url" v-html="link.label" />
+                    </div>
                 </div>
             </div>
         </div>

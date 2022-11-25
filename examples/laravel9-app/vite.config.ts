@@ -5,7 +5,7 @@ import vue from '@vitejs/plugin-vue';
 export default defineConfig({
     plugins: [
         laravel({
-            input: 'resources/js/app.js',
+            input: 'resources/ts/app.ts',
             refresh: true,
         }),
         vue({
@@ -17,4 +17,9 @@ export default defineConfig({
             },
         }),
     ],
+    resolve: {
+        alias: {
+          ziggy: 'vendor/tightenco/ziggy/dist/vue.es.js',
+        },
+      },
 });

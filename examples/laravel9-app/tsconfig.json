@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+      "target": "esnext",
+      "module": "esnext",
+      "strict": true,
+      "jsx": "preserve",
+      "moduleResolution": "node",
+      "baseUrl": "./",
+      "skipLibCheck": true,
+      "paths": {
+        "@/*": ["resources/js/*"],
+        "@/types/*": ["resources/ts/types/*"],
+        "ziggy": ["vendor/tightenco/ziggy/dist/vue.es.js"]
+      },
+      "types": ["vite/client"],
+      "lib": ["esnext", "dom"],
+      "allowJs": true,
+      "strictFunctionTypes": false
+    },
+    "include": ["resources/js/**/*", "resources/ts/*"],
+    "exclude": ["node_modules", "public"]
+  }
