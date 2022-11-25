@@ -1,13 +1,22 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/inertia-vue3';
+import { Link, usePage } from '@inertiajs/inertia-vue3';
+import route from 'ziggy-js';
+import { User } from '@/types/model';
 
 const showingNavigationDropdown = ref(false);
+
+const page = usePage<{
+    auth: {
+        user: User
+    }
+}>()
+
 </script>
 
 <template>
@@ -45,7 +54,7 @@ const showingNavigationDropdown = ref(false);
                                                 type="button"
                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                             >
-                                                {{ $page.props.auth.user.name }}
+                                                {{ page.props.value.auth.user.name }}
 
                                                 <svg
                                                     class="ml-2 -mr-0.5 h-4 w-4"
@@ -121,9 +130,9 @@ const showingNavigationDropdown = ref(false);
                     <div class="pt-4 pb-1 border-t border-gray-200">
                         <div class="px-4">
                             <div class="font-medium text-base text-gray-800">
-                                {{ $page.props.auth.user.name }}
+                                {{ page.props.value.auth.user.name }}
                             </div>
-                            <div class="font-medium text-sm text-gray-500">{{ $page.props.auth.user.email }}</div>
+                            <div class="font-medium text-sm text-gray-500">{{ page.props.value.auth.user.email }}</div>
                         </div>
 
                         <div class="mt-3 space-y-1">

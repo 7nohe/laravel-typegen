@@ -1,14 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+import route from 'ziggy-js';
 
 const props = defineProps({
     status: String,
 });
 
-const form = useForm();
+const form = useForm({});
 
 const submit = () => {
     form.post(route('verification.send'));
@@ -32,7 +33,7 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
 
         <form @submit.prevent="submit">
             <div class="mt-4 flex items-center justify-between">
-                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <PrimaryButton type="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Resend Verification Email
                 </PrimaryButton>
 

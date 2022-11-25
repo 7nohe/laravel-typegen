@@ -1,10 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, useForm } from '@inertiajs/inertia-vue3';
+import route from 'ziggy-js';
 
 const form = useForm({
     password: '',
@@ -41,7 +42,7 @@ const submit = () => {
             </div>
 
             <div class="flex justify-end mt-4">
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <PrimaryButton type="submit" class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Confirm
                 </PrimaryButton>
             </div>

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
@@ -7,7 +7,7 @@ import { Head } from '@inertiajs/inertia-vue3';
 
 defineProps({
     mustVerifyEmail: Boolean,
-    status: Boolean,
+    status: String,
 });
 </script>
 

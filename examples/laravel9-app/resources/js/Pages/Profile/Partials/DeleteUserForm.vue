@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import DangerButton from '@/Components/DangerButton.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -7,9 +7,10 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { useForm, usePage } from '@inertiajs/inertia-vue3';
 import { nextTick, ref } from 'vue';
+import route from 'ziggy-js';
 
 const confirmingUserDeletion = ref(false);
-const passwordInput = ref(null);
+const passwordInput = ref<HTMLInputElement | null>(null);
 
 const form = useForm({
     password: '',
@@ -18,14 +19,14 @@ const form = useForm({
 const confirmUserDeletion = () => {
     confirmingUserDeletion.value = true;
 
-    nextTick(() => passwordInput.value.focus());
+    nextTick(() => passwordInput?.value?.focus());
 };
 
 const deleteUser = () => {
     form.delete(route('profile.destroy'), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
-        onError: () => passwordInput.value.focus(),
+        onError: () => passwordInput?.value?.focus(),
         onFinish: () => form.reset(),
     });
 };
@@ -48,7 +49,7 @@ const closeModal = () => {
             </p>
         </header>
 
-        <DangerButton @click="confirmUserDeletion">Delete Account</DangerButton>
+        <DangerButton type="submit" @click="confirmUserDeletion">Delete Account</DangerButton>
 
         <Modal :show="confirmingUserDeletion" @close="closeModal">
             <div class="p-6">
@@ -78,9 +79,10 @@ const closeModal = () => {
                 </div>
 
                 <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+                    <SecondaryButton type="button" @click="closeModal"> Cancel </SecondaryButton>
 
                     <DangerButton
+                        type="submit"
                         class="ml-3"
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"

@@ -1,17 +1,23 @@
-<script setup>
+<script setup lang="ts">
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { User } from '@/types/model';
 import { Link, useForm, usePage } from '@inertiajs/inertia-vue3';
 import { ref } from 'vue';
+import route from 'ziggy-js';
 
 const props = defineProps({
     mustVerifyEmail: Boolean,
     status: String,
 });
 
-const user = usePage().props.value.auth.user;
+const user = usePage<{
+    auth: {
+        user: User
+    }
+}>().props.value.auth.user;
 
 const form = useForm({
     name: user.name,
@@ -83,7 +89,7 @@ const form = useForm({
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <PrimaryButton type="submit" :disabled="form.processing">Save</PrimaryButton>
 
                 <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
                     <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>

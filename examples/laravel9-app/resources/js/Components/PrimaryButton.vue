@@ -1,10 +1,7 @@
-<script setup>
-defineProps({
-    type: {
-        type: String,
-        default: 'submit',
-    },
-});
+<script setup lang="ts">
+const { type = 'submit' } = defineProps<{
+    type: "submit" | "button" | "reset" | undefined
+}>();
 </script>
 
 <template>

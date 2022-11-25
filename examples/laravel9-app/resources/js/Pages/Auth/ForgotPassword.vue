@@ -1,10 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, useForm } from '@inertiajs/inertia-vue3';
+import route from 'ziggy-js';
 
 defineProps({
     status: String,
@@ -50,7 +51,7 @@ const submit = () => {
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <PrimaryButton type="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Email Password Reset Link
                 </PrimaryButton>
             </div>
