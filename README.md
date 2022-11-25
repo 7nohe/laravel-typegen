@@ -6,6 +6,7 @@
 - Generate TypeScript types from Laravel models
 - Support Relationhips
 - Support Enum (from PHP8.1)
+- Provide useful types for Laravel (e.g. pagination, etc.)
 
 ## Installation
 
@@ -99,6 +100,61 @@ If you use (Laravel Enum)[https://github.com/BenSampo/laravel-enum], use the opt
     },
 }
 ```
+
+### Useful types for Laravel
+
+We provide useful types for Laravel (especially for Inertia).
+
+For example, to return a paginated Inertia response in DashboardController, you can write the following
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use Inertia\Inertia;
+
+class DashboardController extends Controller
+{
+    public function __invoke()
+    {
+        $users = User::latest('id')->paginate(5);
+        return Inertia::render(
+            'Dashboard',
+            [
+                'users' => $users
+            ]
+        );
+    }
+}
+
+```
+
+You can import types already defined by Laravel Typegen.
+
+```vue
+<!-- Dashboard.vue -->
+<script setup lang="ts">
+import { defineProps } from 'vue';
+import { Paginate } from '@7nohe/laravel-typegen';
+import { User } from '@/types/model'; // generated types
+
+defineProps<{ users: Paginate<User> }>();
+
+</script>
+<template>
+    <div>
+        <ul>
+            <li v-for="user in users.data">- {{ user.name }}({{ user.email }})</li>
+        </ul>
+        <div class="flex justify-center mt-4 space-x-4">
+            <Link v-for="(link, key) in users.links" :key="key" :href="link.url ?? '#'" v-html="link.label" />
+        </div>
+    </div>
+</template>
+```
+
 
 ## Available options
 

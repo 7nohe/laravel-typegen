@@ -5,6 +5,7 @@
   "bin": {
     "laravel-typegen": "dist/src/cli.js"
   },
+  "types": "./src/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "prepublishOnly": "pnpm run build",
