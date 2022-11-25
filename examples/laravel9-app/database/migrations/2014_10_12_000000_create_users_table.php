@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->enum('gender', GenderType::getValues());
+            $table->enum('gender', array_column(GenderType::cases(), 'value'));
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
