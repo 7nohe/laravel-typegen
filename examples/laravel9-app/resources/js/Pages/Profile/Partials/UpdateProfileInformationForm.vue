@@ -5,8 +5,6 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { User } from '@/types/model';
 import { Link, useForm, usePage } from '@inertiajs/inertia-vue3';
-import { ref } from 'vue';
-import route from 'ziggy-js';
 
 const props = defineProps({
     mustVerifyEmail: Boolean,

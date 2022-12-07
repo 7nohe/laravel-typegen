@@ -17,7 +17,7 @@ class PostsController extends Controller
     {
         $posts = Post::all();
         return Inertia::render(
-            'Posts',
+            'Posts/Index',
             [
                 'posts' => $posts
             ]
@@ -53,7 +53,13 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Post::find($id);
+        return Inertia::render(
+            'Posts/Show',
+            [
+                'post' => $post
+            ]
+        );
     }
 
     /**

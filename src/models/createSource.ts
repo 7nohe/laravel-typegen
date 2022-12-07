@@ -1,9 +1,9 @@
 import ts from "typescript";
-import { CLIOptions } from "./cli";
+import { CLIOptions } from "../cli";
 import { createEnumTypes } from "./createEnumTypes";
 import { createLaravelEnumTypes } from "./createLarvelEnumTypes";
 import { createTypes } from "./createTypes";
-import { LaravelModelType } from "./types";
+import { LaravelModelType } from "../types";
 const createSourceFile = (
   modelData: LaravelModelType[],
   enums: string[],
@@ -22,12 +22,13 @@ const createSourceFile = (
 };
 
 export const createSource = (
+  filename: string,
   modelData: LaravelModelType[],
   enums: string[],
   options: CLIOptions
 ) => {
   const resultFile = ts.createSourceFile(
-    "model.ts",
+    filename,
     "",
     ts.ScriptTarget.Latest,
     false,
