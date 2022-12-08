@@ -17,6 +17,6 @@
       "allowJs": true,
       "strictFunctionTypes": false
     },
-    "include": ["resources/js/**/*", "resources/ts/*"],
+    "include": ["resources/js/**/*", "resources/ts/**/*"],
     "exclude": ["node_modules", "public"]
   }

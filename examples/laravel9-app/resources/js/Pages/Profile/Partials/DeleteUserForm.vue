@@ -7,7 +7,6 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { useForm, usePage } from '@inertiajs/inertia-vue3';
 import { nextTick, ref } from 'vue';
-import route from 'ziggy-js';
 
 const confirmingUserDeletion = ref(false);
 const passwordInput = ref<HTMLInputElement | null>(null);

@@ -63,3 +63,12 @@ export type LaravelModelType = {
   relations: Relation[];
   observers: any[];
 };
+
+export type LaravelRouteListType = {
+    "domain": string | null;
+    "method": 'GET|HEAD' | 'POST' | 'PUT|PATCH' | 'DELETE';
+    "uri": string,
+    "name": string | null,
+    "action": string,
+    "middleware": string[]
+}

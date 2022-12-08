@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { User } from '@/types/model';
 import { Head, Link, usePage } from '@inertiajs/inertia-vue3';
-import route from 'ziggy-js';
 
 defineProps({
     canLogin: Boolean,

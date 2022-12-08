@@ -6,7 +6,6 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link, usePage } from '@inertiajs/inertia-vue3';
-import route from 'ziggy-js';
 import { User } from '@/types/model';
 
 const showingNavigationDropdown = ref(false);
@@ -40,6 +39,11 @@ const page = usePage<{
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
+                                </NavLink>
+                            </div>
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <NavLink :href="route('posts.index')" :active="route().current('posts.index')">
+                                    Posts
                                 </NavLink>
                             </div>
                         </div>
@@ -123,6 +127,11 @@ const page = usePage<{
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
+                        </ResponsiveNavLink>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink :href="route('posts.index')" :active="route().current('posts.index')">
+                            Posts
                         </ResponsiveNavLink>
                     </div>
 

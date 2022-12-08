@@ -8,6 +8,7 @@ export type CLIOptions = {
   output: string;
   laravelEnum: boolean;
   enumPath: string;
+  ziggy: boolean;
 };
 
 const program = new Command();
@@ -15,10 +16,11 @@ const program = new Command();
 program
   .name("laravel-typegen")
   .version(packageJson.version)
-  .description("Generate TypeScript types from your Laravel models")
+  .description("Generate TypeScript types from your Laravel code")
   .option("-o, --output <value>", "Output directory", defaultOutputPath)
   .option("--laravel-enum", "Use Laravel Enum", false)
   .option("--enum-path <value>", "Path to enum files", defaultEnumPath)
+  .option("-z, --ziggy", "Generate types for ziggy", false)
   .parse();
 
 const options = program.opts<CLIOptions>();

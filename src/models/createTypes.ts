@@ -1,6 +1,6 @@
 import ts, { TypeNode } from "typescript";
-import { isEnum } from "./utils";
-import { Attribute, ColumnType, LaravelModelType, Relation } from "./types";
+import { isEnum } from "../utils";
+import { Attribute, ColumnType, LaravelModelType, Relation } from "../types";
 
 type TSModelKeyword =
   | ts.SyntaxKind.NumberKeyword

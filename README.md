@@ -6,6 +6,7 @@
 - Generate TypeScript types from Laravel models
 - Support Relationhips
 - Support Enum (from PHP8.1)
+- Generate route.d.ts file for ziggy
 - Provide useful types for Laravel (e.g. pagination, etc.)
 
 ## Installation
@@ -90,7 +91,7 @@ export enum GenderType {
 ```
 
 ### Laravel Enum Support
-If you use (Laravel Enum)[https://github.com/BenSampo/laravel-enum], use the option `--laravel-enum`.
+If you use [Laravel Enum](https://github.com/BenSampo/laravel-enum), use the option `--laravel-enum`.
 
 
 ```json
@@ -99,6 +100,44 @@ If you use (Laravel Enum)[https://github.com/BenSampo/laravel-enum], use the opt
         "typegen": "laravel-typegen --laravel-enum"
     },
 }
+```
+
+### Use strongly typed `route()` function for ziggy
+
+Running the `laravel-typegen` command with the `--ziggy` option will generate route.d.ts.
+
+It helps typing the `route()` function.
+
+```json
+{
+    "scripts": {
+        "typegen": "laravel-typegen --ziggy"
+    },
+}
+```
+
+For example, define the following routes
+
+```php
+// routes/web.php
+Route::resource('posts', PostsController::class);
+```
+
+```bash
+$ php artisan route:list
+GET|HEAD posts/{post} posts.show › PostsController@show
+```
+
+Parameters will be checked strictly based on the route name.
+
+```ts
+// in your TypeScript code
+
+// OK
+route('posts.show', { post: post.id })
+
+// Error
+route('posts.show', { id: post.id })
 ```
 
 ### Useful types for Laravel
@@ -168,6 +207,7 @@ Options:
   -o, --output <value>  Output directory (default: "resources/ts/types")
   --laravel-enum        Use Laravel Enum (default: false)
   --enum-path <value>   Path to enum files (default: "app/Enums")
+  -z, --ziggy           Generate types for ziggy (default: false)
   -h, --help            display help for command
 ```
 
