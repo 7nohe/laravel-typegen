@@ -19,7 +19,7 @@ declare global {
 }
 declare module "vue" {
   interface ComponentCustomProperties {
-    appRoute: (<T extends keyof RouteParams>() => CustomRouter<T>) &
+    route: (<T extends keyof RouteParams>() => CustomRouter<T>) &
       (<T extends keyof RouteParams>(
         name: T,
         params?: RouteParams[T],
