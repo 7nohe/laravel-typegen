@@ -1,9 +1,12 @@
-import { Config, Router } from 'ziggy-js';
-import { RouteParams } from './param';
+import { Config, Router } from "ziggy-js";
+import { RouteParams } from "./param";
 type CustomRouter<T> = {
   get params(): RouteParams[T];
   current(): Extract<keyof RouteParams, T> | undefined;
-  current(name: Extract<keyof RouteParams, T>, params?: RouteParams[T]): boolean;
+  current(
+    name: Extract<keyof RouteParams, T>,
+    params?: RouteParams[T]
+  ): boolean;
 } & Router;
 declare global {
   declare function route<T extends keyof RouteParams>(): CustomRouter<T>;
@@ -14,9 +17,14 @@ declare global {
     config?: Config
   ): string;
 }
-declare module 'vue' {
+declare module "vue" {
   interface ComponentCustomProperties {
     appRoute: (<T extends keyof RouteParams>() => CustomRouter<T>) &
-      (<T extends keyof RouteParams>(name: T, params?: RouteParams[T], absolute?: boolean, config?: Config) => string);
+      (<T extends keyof RouteParams>(
+        name: T,
+        params?: RouteParams[T],
+        absolute?: boolean,
+        config?: Config
+      ) => string);
   }
 }
