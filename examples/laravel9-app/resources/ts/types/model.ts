@@ -17,6 +17,15 @@ export type User = {
     created_at?: string;
     updated_at?: string;
     posts?: Post[];
+    user_contacts?: UserContact[];
+};
+export type UserContact = {
+    id: number;
+    phone_number: string;
+    user_id: number;
+    created_at?: string;
+    updated_at?: string;
+    user?: User;
 };
 export enum GenderType {
     Male = "Male",
