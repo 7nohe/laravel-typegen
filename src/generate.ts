@@ -2,7 +2,6 @@ import { print } from "./print";
 import { CLIOptions } from "./cli";
 import { createSource as createModelSource } from "./models/createSource";
 import {
-  createRouteDeclarationSource,
   createRouteParamsSource,
 } from "./routes/createSource";
 import glob from "glob";
@@ -17,6 +16,7 @@ import {
   routeParamsFileName,
   indexDeclarationFileName,
 } from "./constants";
+import path from "path";
 
 const tmpDir = "./.laravel-typegen-tmp";
 export async function generate(options: CLIOptions) {
@@ -63,10 +63,8 @@ export async function generate(options: CLIOptions) {
 
     print(routeParamsFileName, routeSource, defaultOutputPath);
 
-    const routeDeclarationSource = createRouteDeclarationSource(
-      indexDeclarationFileName
-    );
-    print(indexDeclarationFileName, routeDeclarationSource, defaultOutputPath);
+    // Copy route.d.ts
+    fs.copyFileSync(path.resolve(__dirname, '../templates/route.d.ts'), path.resolve(defaultOutputPath, indexDeclarationFileName))
   }
 
   fs.rmSync(tmpDir, { recursive: true });
