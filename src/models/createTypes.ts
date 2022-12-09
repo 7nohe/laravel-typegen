@@ -1,5 +1,5 @@
 import ts, { TypeNode } from "typescript";
-import { isEnum } from "../utils";
+import { convertCamelToSnake, isEnum } from "../utils";
 import { Attribute, ColumnType, LaravelModelType, Relation } from "../types";
 
 type TSModelKeyword =
@@ -117,7 +117,7 @@ export const createTypes = (modelData: LaravelModelType[]) => {
           .map((relation) =>
             ts.factory.createPropertySignature(
               undefined,
-              ts.factory.createIdentifier(relation.name),
+              ts.factory.createIdentifier(convertCamelToSnake(relation.name)),
               ts.factory.createToken(ts.SyntaxKind.QuestionToken),
               getRelationNode(relation)
             )
