@@ -9,6 +9,7 @@ export type CLIOptions = {
   laravelEnum: boolean;
   enumPath: string;
   ziggy: boolean;
+  ignoreRouteDts: boolean;
 };
 
 const program = new Command();
@@ -21,6 +22,7 @@ program
   .option("--laravel-enum", "Use Laravel Enum", false)
   .option("--enum-path <value>", "Path to enum files", defaultEnumPath)
   .option("-z, --ziggy", "Generate types for ziggy", false)
+  .option("--ignore-route-dts", "Ignore generating route.d.ts", false)
   .parse();
 
 const options = program.opts<CLIOptions>();

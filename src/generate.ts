@@ -64,7 +64,9 @@ export async function generate(options: CLIOptions) {
     print(routeParamsFileName, routeSource, defaultOutputPath);
 
     // Copy route.d.ts
-    fs.copyFileSync(path.resolve(__dirname, '../templates/route.d.ts'), path.resolve(defaultOutputPath, indexDeclarationFileName))
+    if (!options.ignoreRouteDts) {
+      fs.copyFileSync(path.resolve(__dirname, '../templates/route.d.ts'), path.resolve(defaultOutputPath, indexDeclarationFileName))
+    }
   }
 
   fs.rmSync(tmpDir, { recursive: true });
