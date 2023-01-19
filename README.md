@@ -175,7 +175,6 @@ You can import types already defined by Laravel Typegen.
 ```vue
 <!-- Dashboard.vue -->
 <script setup lang="ts">
-import { defineProps } from 'vue';
 import { Paginate } from '@7nohe/laravel-typegen';
 import { User } from '@/types/model'; // generated types
 
