@@ -12,3 +12,7 @@ export const isEnum = (attribute: Attribute, customEnumPath?: string) => {
     ?.replaceAll("\\", "-")
     .match(new RegExp(customEnumPath ?? enumPath));
 };
+
+export const convertCamelToSnake = (camelCaseString: string) => {
+  return camelCaseString.replace(/[A-Z]/g, str => `_${str.toLowerCase()}`);
+}
