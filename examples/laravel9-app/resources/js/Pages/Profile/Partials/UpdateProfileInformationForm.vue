@@ -4,7 +4,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { User } from '@/types/model';
-import { Link, useForm, usePage } from '@inertiajs/inertia-vue3';
+import { Method } from '@inertiajs/core';
+import { Link, useForm, usePage } from '@inertiajs/vue3';
 
 const props = defineProps({
     mustVerifyEmail: Boolean,
@@ -12,10 +13,10 @@ const props = defineProps({
 });
 
 const user = usePage<{
-    auth: {
-        user: User
-    }
-}>().props.value.auth.user;
+        auth: {
+            user: User
+        }
+}>().props.auth.user;
 
 const form = useForm({
     name: user.name,
@@ -70,7 +71,7 @@ const form = useForm({
                     Your email address is unverified.
                     <Link
                         :href="route('verification.send')"
-                        method="post"
+                        :method="Method.POST"
                         as="button"
                         class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >

@@ -2,7 +2,8 @@
 import { computed } from 'vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Method } from '@inertiajs/core';
 
 const props = defineProps({
     status: String,
@@ -38,7 +39,7 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
 
                 <Link
                     :href="route('logout')"
-                    method="post"
+                    :method="Method.POST"
                     as="button"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >Log Out</Link
