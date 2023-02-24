@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('gender', array_column(GenderType::cases(), 'value'));
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->text('bio')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
