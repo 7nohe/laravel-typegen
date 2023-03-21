@@ -1,3 +1,12 @@
+export type Job = {
+    id: number;
+    queue: string;
+    payload: string;
+    attempts: any;
+    reserved_at?: number;
+    available_at: number;
+    created_at: number;
+};
 export type Post = {
     id: number;
     title: string;
@@ -14,6 +23,7 @@ export type User = {
     email: string;
     gender: GenderType;
     email_verified_at?: string;
+    bio?: string;
     created_at?: string;
     updated_at?: string;
     posts?: Post[];

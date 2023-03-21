@@ -9,11 +9,15 @@ type TSModelKeyword =
 
 const keywordTypeDictionary: Record<ColumnType, TSModelKeyword> = {
   "bigint unsigned": ts.SyntaxKind.NumberKeyword,
+  "integer unsigned": ts.SyntaxKind.NumberKeyword,
   bigint: ts.SyntaxKind.NumberKeyword,
   integer: ts.SyntaxKind.NumberKeyword,
+  smallint: ts.SyntaxKind.NumberKeyword,
   boolean: ts.SyntaxKind.BooleanKeyword,
   datetime: ts.SyntaxKind.StringKeyword,
   date: ts.SyntaxKind.StringKeyword,
+  text: ts.SyntaxKind.StringKeyword,
+  string: ts.SyntaxKind.StringKeyword,
 };
 
 const getKeywordType = (columnType: ColumnType | null) => {
@@ -23,7 +27,7 @@ const getKeywordType = (columnType: ColumnType | null) => {
   const keywordType = keywordTypeDictionary[columnType];
   if (keywordType) return keywordType;
 
-  if (columnType.match(/string\(/)) {
+  if (columnType.match(/string|text\(/)) {
     return ts.SyntaxKind.StringKeyword;
   }
 
