@@ -216,7 +216,7 @@ Options:
 ### Setup example project
 
 ```bash
-$ cd examples/laravel9-app
+$ cd examples/laravel10-app
 $ cp .env.example .env
 $ docker run --rm \
     -u "$(id -u):$(id -g)" \
