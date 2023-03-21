@@ -28,9 +28,8 @@ export async function generate(options: CLIOptions) {
   }
   // Generate models
   for (const model of models) {
-    const modelName = model.split("/").at(-1)?.replace(".php", "");
+    const modelName = path.basename(model, path.extname(model));
     const modelShowCommand = `php artisan model:show ${modelName} --json > ${tmpDir}/${modelName}.json`;
-    console.log(modelShowCommand);
     execSync(modelShowCommand);
     const modelJson = JSON.parse(
       fs.readFileSync(`${tmpDir}/${modelName}.json`, "utf8")
@@ -49,7 +48,6 @@ export async function generate(options: CLIOptions) {
   // Generate types for ziggy
   if (options.ziggy) {
     const routeListCommand = `php artisan route:list --json > ${tmpDir}/route.json`;
-    console.log(routeListCommand);
     execSync(routeListCommand);
     const routeJson = JSON.parse(
       fs.readFileSync(`${tmpDir}/route.json`, "utf8")

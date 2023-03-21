@@ -28,4 +28,11 @@ program
 const options = program.opts<CLIOptions>();
 
 console.log(`Generating types...`);
-generate(options);
+
+try {
+  generate(options).then(() => {
+    console.log(`Types generated successfully!!`);
+  });
+} catch {
+  console.log('Failed to generate types.')
+}
