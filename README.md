@@ -9,6 +9,12 @@
 - Generate route.d.ts file for ziggy
 - Provide useful types for Laravel (e.g. pagination, etc.)
 
+## Supported Versions
+This library supports the following versions:
+
+- Laravel 9.x and 10.x
+- TypeScript 5.0 and above
+
 ## Installation
 
 ```bash
