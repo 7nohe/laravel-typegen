@@ -1,3 +1,9 @@
+export type History = {
+    id: number;
+    log: string;
+    created_at?: string;
+    updated_at?: string;
+};
 export type Job = {
     id: number;
     queue: string;
@@ -37,6 +43,11 @@ export type UserContact = {
     updated_at?: string;
     user?: User;
 };
+export enum Status {
+    DRAFT = "Draft",
+    IN_REVIEW = "InReview",
+    PUBLISHED = "Published"
+}
 export enum GenderType {
     Male = "Male",
     Female = "Female",
