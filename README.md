@@ -212,7 +212,9 @@ Options:
   -o, --output <value>  Output directory (default: "resources/ts/types")
   --laravel-enum        Use Laravel Enum (default: false)
   --enum-path <value>   Path to enum files (default: "app/Enums")
+  --model-path <value>  Path to model files (default: "app/Models")
   -z, --ziggy           Generate types for ziggy (default: false)
+  --ignore-route-dts    Ignore generating route.d.ts (default: false)
   -h, --help            display help for command
 ```
 
