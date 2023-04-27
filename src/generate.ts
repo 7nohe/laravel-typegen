@@ -38,11 +38,15 @@ export async function generate(options: CLIOptions) {
       tmpDir,
       `${modelName}.json`
     )}`;
-    execSync(modelShowCommand);
-    const modelJson = JSON.parse(
-      fs.readFileSync(path.join(tmpDir, `${modelName}.json`), "utf8")
-    ) as LaravelModelType;
-    modelData.push(modelJson);
+    try {
+      execSync(modelShowCommand);
+      const modelJson = JSON.parse(
+        fs.readFileSync(path.join(tmpDir, `${modelName}.json`), "utf8")
+      ) as LaravelModelType;
+      modelData.push(modelJson);
+    } catch {
+      console.log(`Failed to generate ${modelName}. Skipping...`);
+    }
   }
 
   const modelSource = createModelSource(
