@@ -11,10 +11,13 @@ import {
   modelFileName,
   routeParamsFileName,
   indexDeclarationFileName,
+  formRequestsFileName,
+  tmpDir,
 } from "./constants";
 import path from "path";
+import { parseFormRequests, defaultFormRequestPath } from '@7nohe/laravel-zodgen'
+import { createFormRequestTypes } from "./formRequests/createFormRequestTypes";
 
-const tmpDir = "./.laravel-typegen-tmp";
 export async function generate(options: CLIOptions) {
   const parsedModelPath = path
     .join(options.modelPath, "**", "*.php")
@@ -81,6 +84,11 @@ export async function generate(options: CLIOptions) {
       );
     }
   }
+
+  // Generate types for form requests
+  const rules = parseFormRequests(defaultFormRequestPath, true)
+  const formRequestSource = createFormRequestTypes(rules)
+  print(formRequestsFileName, formRequestSource, defaultOutputPath);
 
   fs.rmSync(tmpDir, { recursive: true });
 }

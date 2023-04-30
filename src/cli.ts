@@ -2,7 +2,8 @@
 import { generate } from "./generate";
 import { Command } from "commander";
 import packageJson from "../package.json";
-import { defaultEnumPath, defaultModelPath, defaultOutputPath } from "./constants";
+import { defaultEnumPath, defaultModelPath, defaultOutputPath, tmpDir } from "./constants";
+import fs from "fs";
 
 export type CLIOptions = {
   output: string;
@@ -37,4 +38,8 @@ try {
   });
 } catch {
   console.log('Failed to generate types.')
+  if (fs.existsSync(tmpDir)) {
+    // Clean up
+    fs.rmSync(tmpDir, { recursive: true });
+  }
 }

@@ -32,6 +32,7 @@
     "@types/node": "^18.11.18"
   },
   "dependencies": {
+    "@7nohe/laravel-zodgen": "^0.1.5",
     "commander": "^10.0.0",
     "glob": "^9.3.1",
     "php-parser": "^3.1.3",
