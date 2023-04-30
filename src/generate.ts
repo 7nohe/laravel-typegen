@@ -15,7 +15,10 @@ import {
   tmpDir,
 } from "./constants";
 import path from "path";
-import { parseFormRequests, defaultFormRequestPath } from '@7nohe/laravel-zodgen'
+import {
+  parseFormRequests,
+  defaultFormRequestPath,
+} from "@7nohe/laravel-zodgen";
 import { createFormRequestTypes } from "./formRequests/createFormRequestTypes";
 
 export async function generate(options: CLIOptions) {
@@ -79,16 +82,18 @@ export async function generate(options: CLIOptions) {
     // Copy route.d.ts
     if (!options.ignoreRouteDts) {
       fs.copyFileSync(
-        path.resolve(__dirname, '..',  'templates', indexDeclarationFileName),
+        path.resolve(__dirname, "..", "templates", indexDeclarationFileName),
         path.resolve(defaultOutputPath, indexDeclarationFileName)
       );
     }
   }
 
-  // Generate types for form requests
-  const rules = parseFormRequests(defaultFormRequestPath, true)
-  const formRequestSource = createFormRequestTypes(rules)
-  print(formRequestsFileName, formRequestSource, defaultOutputPath);
+  if (options.formRequest) {
+    // Generate types for form requests
+    const rules = parseFormRequests(defaultFormRequestPath, true);
+    const formRequestSource = createFormRequestTypes(rules);
+    print(formRequestsFileName, formRequestSource, defaultOutputPath);
+  }
 
   fs.rmSync(tmpDir, { recursive: true });
 }
@@ -96,7 +101,10 @@ export async function generate(options: CLIOptions) {
 const createModelDirectory = (modelName: string) => {
   const modelNameArray = modelName.split("/");
   modelNameArray.pop();
-  if (modelNameArray.length > 0 && !fs.existsSync(path.join(tmpDir, ...modelNameArray))) {
+  if (
+    modelNameArray.length > 0 &&
+    !fs.existsSync(path.join(tmpDir, ...modelNameArray))
+  ) {
     fs.mkdirSync(path.join(tmpDir, ...modelNameArray));
   }
 };

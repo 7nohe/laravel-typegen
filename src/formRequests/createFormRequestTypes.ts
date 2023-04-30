@@ -1,5 +1,5 @@
-import { ParsedRules } from '@7nohe/laravel-zodgen';
-import ts from 'typescript'
+import { ParsedRules } from "@7nohe/laravel-zodgen";
+import ts from "typescript";
 
 function getKeyword(name: string): ts.KeywordTypeSyntaxKind {
   switch (name) {
@@ -16,21 +16,28 @@ function getKeyword(name: string): ts.KeywordTypeSyntaxKind {
   }
 }
 
-export function createTypeNodeFromFields(
-  fields: { [key: string]: { name: string; isRequired: boolean } | object }
-): ts.TypeNode {
+export function createTypeNodeFromFields(fields: {
+  [key: string]: { name: string; isRequired: boolean } | object;
+}): ts.TypeNode {
   const isArray = "*" in fields;
   if (isArray) {
     const arrayValue = fields["*"];
-    const isArrayOfPrimitives = typeof arrayValue === "object" && ("name" in arrayValue) && typeof arrayValue.name === 'string';
-    if (isArrayOfPrimitives) { 
-      const arrayPrimitiveType = ts.factory.createKeywordTypeNode(getKeyword(arrayValue.name as string))
+    const isArrayOfPrimitives =
+      typeof arrayValue === "object" &&
+      "name" in arrayValue &&
+      typeof arrayValue.name === "string";
+    if (isArrayOfPrimitives) {
+      const arrayPrimitiveType = ts.factory.createKeywordTypeNode(
+        getKeyword(arrayValue.name as string)
+      );
       return ts.factory.createArrayTypeNode(arrayPrimitiveType);
     }
     const arrayElementType = createTypeNodeFromFields(arrayValue as any);
     return ts.factory.createArrayTypeNode(arrayElementType);
   }
-  const members = Object.entries(fields).flatMap<ts.PropertySignature | ts.TypeNode>(([name, value]) => {
+  const members = Object.entries(fields).flatMap<
+    ts.PropertySignature | ts.TypeNode
+  >(([name, value]) => {
     const isNested = typeof value === "object" && !("name" in value);
 
     const typeNode = isNested
@@ -39,15 +46,21 @@ export function createTypeNodeFromFields(
 
     const isRequired = isNested ? false : (value as any).isRequired;
 
-    return [ts.factory.createPropertySignature(
-      undefined,
-      name,
-      isRequired ? undefined : ts.factory.createToken(ts.SyntaxKind.QuestionToken),
-      typeNode
-    )];
+    return [
+      ts.factory.createPropertySignature(
+        undefined,
+        name,
+        isRequired
+          ? undefined
+          : ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+        typeNode
+      ),
+    ];
   });
 
-  return ts.factory.createTypeLiteralNode(members.filter(Boolean) as ts.TypeElement[]);
+  return ts.factory.createTypeLiteralNode(
+    members.filter(Boolean) as ts.TypeElement[]
+  );
 }
 
 function createTypeAliasDeclaration(
@@ -64,16 +77,20 @@ function createTypeAliasDeclaration(
   );
 }
 
-export function createFormRequestTypes (rules: {
-  [k: string]: ParsedRules;
-}) {
+export function createFormRequestTypes(rules: { [k: string]: ParsedRules }) {
   const sourceFile = ts.factory.createSourceFile(
-    Object.entries(rules).map(([key, value]) => createTypeAliasDeclaration(key, value)),
+    Object.entries(rules).map(([key, value]) =>
+      createTypeAliasDeclaration(key, value)
+    ),
     ts.factory.createToken(ts.SyntaxKind.EndOfFileToken),
     ts.NodeFlags.None
   );
 
   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
-  const result = printer.printNode(ts.EmitHint.Unspecified, sourceFile, sourceFile);
+  const result = printer.printNode(
+    ts.EmitHint.Unspecified,
+    sourceFile,
+    sourceFile
+  );
   return result;
 }

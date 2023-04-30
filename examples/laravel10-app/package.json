@@ -4,7 +4,7 @@
         "dev": "vite",
         "build": "vite build",
         "type:check": "vue-tsc --noEmit",
-        "typegen": "node node_modules/@7nohe/laravel-typegen/src/cli.js -- --ziggy",
+        "typegen": "node node_modules/@7nohe/laravel-typegen/src/cli.js --ziggy --form-request",
         "typegen:laravel-enum": "node node_modules/@7nohe/laravel-typegen/src/cli.js --enum-path 'app/LaravelEnums' --laravel-enum"
     },
     "devDependencies": {
