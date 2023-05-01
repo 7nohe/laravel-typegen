@@ -16,19 +16,31 @@ function getKeyword(name: string): ts.KeywordTypeSyntaxKind {
   }
 }
 
+function isArrayOfPrimitives(
+  arrayValue:
+    | Record<string, any>
+    | {
+        name: string;
+        isRequired: boolean;
+      }
+) {
+  const isArrayOfPrimitives =
+    typeof arrayValue === "object" &&
+    "name" in arrayValue &&
+    typeof arrayValue.name === "string";
+
+  return isArrayOfPrimitives;
+}
+
 export function createTypeNodeFromFields(fields: {
   [key: string]: { name: string; isRequired: boolean } | object;
 }): ts.TypeNode {
   const isArray = "*" in fields;
   if (isArray) {
     const arrayValue = fields["*"];
-    const isArrayOfPrimitives =
-      typeof arrayValue === "object" &&
-      "name" in arrayValue &&
-      typeof arrayValue.name === "string";
-    if (isArrayOfPrimitives) {
+    if (isArrayOfPrimitives(arrayValue)) {
       const arrayPrimitiveType = ts.factory.createKeywordTypeNode(
-        getKeyword(arrayValue.name as string)
+        getKeyword((arrayValue as { name: string, isRequired: boolean }).name)
       );
       return ts.factory.createArrayTypeNode(arrayPrimitiveType);
     }
@@ -38,11 +50,29 @@ export function createTypeNodeFromFields(fields: {
   const members = Object.entries(fields).flatMap<
     ts.PropertySignature | ts.TypeNode
   >(([name, value]) => {
+    let typeNode: ts.TypeNode;
     const isNested = typeof value === "object" && !("name" in value);
+    if (isNested) {
+      typeNode = createTypeNodeFromFields(value as any);
+    } else {
+      typeNode = ts.factory.createKeywordTypeNode(
+        getKeyword(value.name as string)
+      );
+    }
 
-    const typeNode = isNested
-      ? createTypeNodeFromFields(value as any)
-      : ts.factory.createKeywordTypeNode(getKeyword(value.name as string));
+    const isArray = typeof value === "object" && "*" in value;
+    if (isArray) {
+      const arrayValue = value["*"] as { name: string; isRequired: boolean };
+      if (isArrayOfPrimitives(arrayValue)) {
+        const arrayPrimitiveType = ts.factory.createKeywordTypeNode(
+          getKeyword(arrayValue.name as string)
+        );
+        typeNode = ts.factory.createArrayTypeNode(arrayPrimitiveType);
+      } else {
+        const arrayElementType = createTypeNodeFromFields(arrayValue as any);
+        typeNode = ts.factory.createArrayTypeNode(arrayElementType);
+      }
+    }
 
     const isRequired = isNested ? false : (value as any).isRequired;
 
