@@ -1,12 +1,29 @@
 # Laravel Typegen
 
+## Table of contents
+- [Features](#features)
+- [Supported Versions](#supported-versions)
+- [Installation](#installation)
+- [Usage](#usage)
+    - [Enum Support](#enum-support)
+    - [Laravel Enum Support](#laravel-enum-support)
+    - [Use strongly typed `route()` function for ziggy](#use-strongly-typed-route-function-for-ziggy)
+    - [Useful types for Laravel](#useful-types-for-laravel)
+    - [Form Request types](#form-request-types)
+- [Available Options](#available-options)
+- [Development](#development)
+    - [Setup example project](#setup-example-project)
+    - [Debug](#debug)
+- [License](#license)
+
 
 ## Features
 
-- Generate TypeScript types from Laravel models
+- Generate types from Laravel's Models
 - Support Relationhips
 - Support Enum (from PHP8.1)
-- Generate route.d.ts file for ziggy
+- Generate types from Laravel's Form Requests
+- Generate types for ziggy (Routing)
 - Provide useful types for Laravel (e.g. pagination, etc.)
 
 ## Supported Versions
@@ -199,13 +216,55 @@ defineProps<{ users: Paginate<User> }>();
 </template>
 ```
 
+### Form Request types
+You can generate types from Laravel's Form Request by executing the command with the `--form-requests` option.
+
+If you have the Form Request class as shown below:
+
+```php
+<?php
+
+namespace App\Http\Requests;
+
+use App\Models\User;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+class ProfileUpdateRequest extends FormRequest
+{
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
+     */
+    public function rules()
+    {
+        return [
+            'name' => ['string', 'max:255'],
+            'email' => ['email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+        ];
+    }
+}
+```
+
+The corresponding TypeScript types will be automatically generated as follows:
+
+```ts
+// formRequests.ts
+export type ProfileUpdateRequest = {
+    name?: string;
+    email?: string;
+};
+```
+
+By using these generated types in combination with HTTP Client libraries like Axios, you can write more type-safe code.
 
 ## Available options
 
 ```bash
 Usage: laravel-typegen [options]
 
-Generate TypeScript types from your Laravel models
+Generate TypeScript types from your Laravel code
 
 Options:
   -V, --version         output the version number
@@ -215,6 +274,7 @@ Options:
   --model-path <value>  Path to model files (default: "app/Models")
   -z, --ziggy           Generate types for ziggy (default: false)
   --ignore-route-dts    Ignore generating route.d.ts (default: false)
+  --form-request        Generate types for FormRequests (default: false)
   -h, --help            display help for command
 ```
 

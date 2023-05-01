@@ -2,7 +2,13 @@
 import { generate } from "./generate";
 import { Command } from "commander";
 import packageJson from "../package.json";
-import { defaultEnumPath, defaultModelPath, defaultOutputPath } from "./constants";
+import {
+  defaultEnumPath,
+  defaultModelPath,
+  defaultOutputPath,
+  tmpDir,
+} from "./constants";
+import fs from "fs";
 
 export type CLIOptions = {
   output: string;
@@ -11,6 +17,7 @@ export type CLIOptions = {
   modelPath: string;
   ziggy: boolean;
   ignoreRouteDts: boolean;
+  formRequest: boolean;
 };
 
 const program = new Command();
@@ -25,6 +32,7 @@ program
   .option("--model-path <value>", "Path to model files", defaultModelPath)
   .option("-z, --ziggy", "Generate types for ziggy", false)
   .option("--ignore-route-dts", "Ignore generating route.d.ts", false)
+  .option("--form-request", "Generate types for FormRequests", false)
   .parse();
 
 const options = program.opts<CLIOptions>();
@@ -36,5 +44,9 @@ try {
     console.log(`Types generated successfully!!`);
   });
 } catch {
-  console.log('Failed to generate types.')
+  console.log("Failed to generate types.");
+  if (fs.existsSync(tmpDir)) {
+    // Clean up
+    fs.rmSync(tmpDir, { recursive: true });
+  }
 }
