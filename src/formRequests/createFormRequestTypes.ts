@@ -1,5 +1,21 @@
-import { ParsedRules } from "@7nohe/laravel-zodgen";
 import ts from "typescript";
+
+type ArrayValue =
+  | Record<string, any>
+  | {
+      name: string;
+      isRequired: boolean;
+    };
+
+type FieldValue =
+  | { name: string; isRequired: boolean; "*"?: FieldValue }
+  | object;
+
+type Fields =
+  | {
+      [key: string]: FieldValue;
+    }
+  | FieldValue;
 
 function getKeyword(name: string): ts.KeywordTypeSyntaxKind {
   switch (name) {
@@ -16,65 +32,47 @@ function getKeyword(name: string): ts.KeywordTypeSyntaxKind {
   }
 }
 
-function isArrayOfPrimitives(
-  arrayValue:
-    | Record<string, any>
-    | {
-        name: string;
-        isRequired: boolean;
-      }
-) {
-  const isArrayOfPrimitives =
+function isArrayOfPrimitives(arrayValue: ArrayValue) {
+  return (
     typeof arrayValue === "object" &&
     "name" in arrayValue &&
-    typeof arrayValue.name === "string";
-
-  return isArrayOfPrimitives;
+    typeof arrayValue.name === "string"
+  );
 }
 
-export function createTypeNodeFromFields(fields: {
-  [key: string]: { name: string; isRequired: boolean } | object;
-}): ts.TypeNode {
-  const isArray = "*" in fields;
-  if (isArray) {
-    const arrayValue = fields["*"];
-    if (isArrayOfPrimitives(arrayValue)) {
-      const arrayPrimitiveType = ts.factory.createKeywordTypeNode(
-        getKeyword((arrayValue as { name: string, isRequired: boolean }).name)
-      );
-      return ts.factory.createArrayTypeNode(arrayPrimitiveType);
-    }
-    const arrayElementType = createTypeNodeFromFields(arrayValue as any);
-    return ts.factory.createArrayTypeNode(arrayElementType);
+function createArrayTypeNode(arrayValue: FieldValue): ts.TypeNode {
+  if (isArrayOfPrimitives(arrayValue)) {
+    const arrayPrimitiveType = ts.factory.createKeywordTypeNode(
+      getKeyword((arrayValue as { name: string; isRequired: boolean }).name)
+    );
+    return ts.factory.createArrayTypeNode(arrayPrimitiveType);
+  }
+  const arrayElementType = createTypeNodeFromFields(arrayValue as any);
+  return ts.factory.createArrayTypeNode(arrayElementType);
+}
+
+function createTypeNodeForValue(value: FieldValue): ts.TypeNode {
+  if (typeof value === "object" && !("name" in value)) {
+    return createTypeNodeFromFields(value as any);
+  }
+
+  if (typeof value === "object" && "*" in value && value["*"]) {
+    return createArrayTypeNode(value["*"]);
+  }
+
+  return ts.factory.createKeywordTypeNode(getKeyword(value.name as string));
+}
+
+function createTypeNodeFromFields(fields: Fields): ts.TypeNode {
+  if ("*" in fields && fields["*"]) {
+    return createArrayTypeNode(fields["*"]);
   }
   const members = Object.entries(fields).flatMap<
     ts.PropertySignature | ts.TypeNode
   >(([name, value]) => {
-    let typeNode: ts.TypeNode;
-    const isNested = typeof value === "object" && !("name" in value);
-    if (isNested) {
-      typeNode = createTypeNodeFromFields(value as any);
-    } else {
-      typeNode = ts.factory.createKeywordTypeNode(
-        getKeyword(value.name as string)
-      );
-    }
+    const typeNode = createTypeNodeForValue(value);
 
-    const isArray = typeof value === "object" && "*" in value;
-    if (isArray) {
-      const arrayValue = value["*"] as { name: string; isRequired: boolean };
-      if (isArrayOfPrimitives(arrayValue)) {
-        const arrayPrimitiveType = ts.factory.createKeywordTypeNode(
-          getKeyword(arrayValue.name as string)
-        );
-        typeNode = ts.factory.createArrayTypeNode(arrayPrimitiveType);
-      } else {
-        const arrayElementType = createTypeNodeFromFields(arrayValue as any);
-        typeNode = ts.factory.createArrayTypeNode(arrayElementType);
-      }
-    }
-
-    const isRequired = isNested ? false : (value as any).isRequired;
+    const isRequired = !("name" in value) || (value as any).isRequired;
 
     return [
       ts.factory.createPropertySignature(
@@ -95,19 +93,17 @@ export function createTypeNodeFromFields(fields: {
 
 function createTypeAliasDeclaration(
   typeName: string,
-  fields: { [key: string]: { name: string; isRequired: boolean } | object }
+  fields: Fields
 ): ts.TypeAliasDeclaration {
-  const typeNode = createTypeNodeFromFields(fields);
-
   return ts.factory.createTypeAliasDeclaration(
     [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
     typeName,
     undefined,
-    typeNode
+    createTypeNodeFromFields(fields)
   );
 }
 
-export function createFormRequestTypes(rules: { [k: string]: ParsedRules }) {
+export function createFormRequestTypes(rules: Fields) {
   const sourceFile = ts.factory.createSourceFile(
     Object.entries(rules).map(([key, value]) =>
       createTypeAliasDeclaration(key, value)
@@ -117,10 +113,5 @@ export function createFormRequestTypes(rules: { [k: string]: ParsedRules }) {
   );
 
   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
-  const result = printer.printNode(
-    ts.EmitHint.Unspecified,
-    sourceFile,
-    sourceFile
-  );
-  return result;
+  return printer.printNode(ts.EmitHint.Unspecified, sourceFile, sourceFile);
 }
