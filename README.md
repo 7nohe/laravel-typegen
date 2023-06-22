@@ -302,7 +302,7 @@ Generate TypeScript types from your Laravel code
 
 Options:
   -V, --version         output the version number
-  -o, --output <value>  Output directory (default: "resources/ts/types")
+  -o, --output <value>  Output directory (default: "resources/js/types")
   --laravel-enum        Use Laravel Enum (default: false)
   --enum-path <value>   Path to enum files (default: "app/Enums")
   --model-path <value>  Path to model files (default: "app/Models")

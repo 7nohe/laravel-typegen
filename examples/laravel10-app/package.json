@@ -10,7 +10,7 @@
     "devDependencies": {
         "@7nohe/laravel-typegen": "file:../../../laravel-typegen",
         "@7nohe/laravel-zodgen": "^0.1.5",
-        "@inertiajs/vue3": "^1.0.2",
+        "@inertiajs/vue3": "^1.0.8",
         "@tailwindcss/forms": "^0.5.3",
         "@types/ziggy-js": "^1.3.2",
         "@vitejs/plugin-vue": "^4.1.0",
