@@ -169,6 +169,34 @@ route('posts.show', { post: post.id })
 route('posts.show', { id: post.id })
 ```
 
+If you have created a project using the `--typescript` option of Laravel Breeze, you need to delete the declaration for the `route()` function in resources/js/types/global.d.ts.
+
+```diff
+import { PageProps as InertiaPageProps } from '@inertiajs/core';
+import { AxiosInstance } from 'axios';
+ import ziggyRoute, { Config as ZiggyConfig } from 'ziggy-js';
+import { PageProps as AppPageProps } from './';
+
+declare global {
+    interface Window {
+        axios: AxiosInstance;
+    }
+
+    var route: typeof ziggyRoute;
+    var Ziggy: ZiggyConfig;
+}
+
+- declare module 'vue' {
+-     interface ComponentCustomProperties {
+-        route: typeof ziggyRoute;
+-     }
+- }
+
+declare module '@inertiajs/core' {
+    interface PageProps extends InertiaPageProps, AppPageProps {}
+}
+```
+
 ### Useful types for Laravel
 
 We provide useful types for Laravel (especially for Inertia).
