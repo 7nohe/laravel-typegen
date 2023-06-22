@@ -9,7 +9,7 @@
       "skipLibCheck": true,
       "paths": {
         "@/*": ["resources/js/*"],
-        "@/types/*": ["resources/ts/types/*"],
+        "@/types/*": ["resources/js/types/*"],
         "ziggy": ["vendor/tightenco/ziggy/dist/vue.es.js"]
       },
       "types": ["vite/client"],
@@ -17,6 +17,6 @@
       "allowJs": true,
       "strictFunctionTypes": false
     },
-    "include": ["resources/js/**/*", "resources/ts/**/*"],
+    "include": ["resources/js/**/*"],
     "exclude": ["node_modules", "public"]
   }
