@@ -38,6 +38,12 @@ This library supports the following versions:
 $ npm install -D @7nohe/laravel-typegen
 ```
 
+Laravel Typegen may require installing `doctrine/dbal` via Composer in order to execute the `php artisan model:show` command internally.
+
+```bash
+$ composer require doctrine/dbal
+```
+
 ## Usage
 
 Edit package.json
