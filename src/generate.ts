@@ -77,13 +77,13 @@ export async function generate(options: CLIOptions) {
       options
     );
 
-    print(routeParamsFileName, routeSource, defaultOutputPath);
+    print(routeParamsFileName, routeSource, options.output ?? defaultOutputPath);
 
     // Copy route.d.ts
     if (!options.ignoreRouteDts) {
       fs.copyFileSync(
         path.resolve(__dirname, "..", "templates", indexDeclarationFileName),
-        path.resolve(defaultOutputPath, indexDeclarationFileName)
+        path.resolve(options.output ?? defaultOutputPath, indexDeclarationFileName)
       );
     }
   }
@@ -92,7 +92,7 @@ export async function generate(options: CLIOptions) {
     // Generate types for form requests
     const rules = parseFormRequests(defaultFormRequestPath, true);
     const formRequestSource = createFormRequestTypes(rules);
-    print(formRequestsFileName, formRequestSource, defaultOutputPath);
+    print(formRequestsFileName, formRequestSource, options.output ?? defaultOutputPath);
   }
 
   fs.rmSync(tmpDir, { recursive: true });
