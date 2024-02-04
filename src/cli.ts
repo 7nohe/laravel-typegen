@@ -16,6 +16,7 @@ export type CLIOptions = {
   enumPath: string;
   modelPath: string;
   ziggy: boolean;
+  vendorRoutes: boolean;
   ignoreRouteDts: boolean;
   formRequest: boolean;
 };
@@ -31,6 +32,7 @@ program
   .option("--enum-path <value>", "Path to enum files", defaultEnumPath)
   .option("--model-path <value>", "Path to model files", defaultModelPath)
   .option("-z, --ziggy", "Generate types for ziggy", false)
+  .option("--vendor-routes", "Include routes defined by vendor packages", false)
   .option("--ignore-route-dts", "Ignore generating route.d.ts", false)
   .option("--form-request", "Generate types for FormRequests", false)
   .parse();

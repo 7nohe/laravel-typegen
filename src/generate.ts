@@ -65,7 +65,8 @@ export async function generate(options: CLIOptions) {
 
   // Generate types for ziggy
   if (options.ziggy) {
-    const routeListCommand = `php artisan route:list --json > ${tmpDir}/route.json`;
+    const routeListCommand = `php artisan route:list ${options.vendorRoutes ? "" : "--except-vendor"
+      } --json > ${tmpDir}/route.json`;
     execSync(routeListCommand);
     const routeJson = JSON.parse(
       fs.readFileSync(`${tmpDir}/route.json`, "utf8")
