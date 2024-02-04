@@ -307,6 +307,7 @@ Options:
   --enum-path <value>   Path to enum files (default: "app/Enums")
   --model-path <value>  Path to model files (default: "app/Models")
   -z, --ziggy           Generate types for ziggy (default: false)
+  --vendor-routes       Include routes defined by vendor packages (default: false)
   --ignore-route-dts    Ignore generating route.d.ts (default: false)
   --form-request        Generate types for FormRequests (default: false)
   -h, --help            display help for command
