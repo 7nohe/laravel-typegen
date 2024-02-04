@@ -1,7 +1,4 @@
 export type RouteParams = {
-    "ignition.executeSolution": {};
-    "ignition.healthCheck": {};
-    "ignition.updateConfig": {};
     "password.confirm": {};
     "dashboard": {};
     "verification.send": {};
@@ -33,7 +30,6 @@ export type RouteParams = {
     "password.reset": {
         token: string;
     };
-    "sanctum.csrf-cookie": {};
     "verification.notice": {};
     "verification.verify": {
         id: string;
