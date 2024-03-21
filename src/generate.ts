@@ -2,7 +2,7 @@ import { print } from "./print";
 import { CLIOptions } from "./cli";
 import { createSource as createModelSource } from "./models/createSource";
 import { createRouteParamsSource } from "./routes/createSource";
-import glob from "glob";
+import { sync } from "glob";
 import fs from "fs";
 import { execSync } from "child_process";
 import { LaravelModelType, LaravelRouteListType } from "./types";
@@ -25,12 +25,12 @@ export async function generate(options: CLIOptions) {
   const parsedModelPath = path
     .join(options.modelPath, "**", "*.php")
     .replace(/\\/g, "/");
-  const models = glob.sync(parsedModelPath);
+  const models = sync(parsedModelPath);
   const modelData: LaravelModelType[] = [];
   const parsedEnumPath = path
     .join(options.enumPath, "**", "*.php")
     .replace(/\\/g, "/");
-  const enums = glob.sync(parsedEnumPath);
+  const enums = sync(parsedEnumPath);
   if (!fs.existsSync(tmpDir)) {
     fs.mkdirSync(tmpDir);
   }
