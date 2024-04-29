@@ -18,6 +18,8 @@ const keywordTypeDictionary: Record<ColumnType, TSModelKeyword> = {
   date: ts.SyntaxKind.StringKeyword,
   text: ts.SyntaxKind.StringKeyword,
   string: ts.SyntaxKind.StringKeyword,
+  char: ts.SyntaxKind.StringKeyword,
+  varchar: ts.SyntaxKind.StringKeyword,
 };
 
 const getKeywordType = (columnType: ColumnType | null) => {
@@ -27,7 +29,7 @@ const getKeywordType = (columnType: ColumnType | null) => {
   const keywordType = keywordTypeDictionary[columnType];
   if (keywordType) return keywordType;
 
-  if (columnType.match(/string|text\(/)) {
+  if (columnType.match(/string|text|char.*|varchar.*/)) {
     return ts.SyntaxKind.StringKeyword;
   }
 
