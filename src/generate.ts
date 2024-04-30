@@ -25,12 +25,12 @@ export async function generate(options: CLIOptions) {
   const parsedModelPath = path
     .join(options.modelPath, "**", "*.php")
     .replace(/\\/g, "/");
-  const models = sync(parsedModelPath);
+  const models = sync(parsedModelPath).sort();
   const modelData: LaravelModelType[] = [];
   const parsedEnumPath = path
     .join(options.enumPath, "**", "*.php")
     .replace(/\\/g, "/");
-  const enums = sync(parsedEnumPath);
+  const enums = sync(parsedEnumPath).sort();
   if (!fs.existsSync(tmpDir)) {
     fs.mkdirSync(tmpDir);
   }
