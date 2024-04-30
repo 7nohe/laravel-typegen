@@ -88,6 +88,11 @@ const createAttributeType = (attribute: Attribute) => {
     );
   }
 
+  // Date, DateTime cast
+  if (attribute.cast && ["date", "datetime"].includes(attribute.cast)) {
+    node = ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword);
+  }
+
   // Json type
   if (attribute.type === "json") {
     if (attribute.cast === "array") {
