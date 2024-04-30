@@ -11,7 +11,7 @@ export type Job = {
     attempts: any;
     reserved_at?: number;
     available_at: number;
-    created_at: number;
+    created_at: string;
 };
 export type Post = {
     id: number;
