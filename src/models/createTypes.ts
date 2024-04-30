@@ -18,6 +18,8 @@ const keywordTypeDictionary: Record<ColumnType, TSModelKeyword> = {
   date: ts.SyntaxKind.StringKeyword,
   text: ts.SyntaxKind.StringKeyword,
   string: ts.SyntaxKind.StringKeyword,
+  char: ts.SyntaxKind.StringKeyword,
+  varchar: ts.SyntaxKind.StringKeyword,
 };
 
 const getKeywordType = (columnType: ColumnType | null) => {
@@ -27,7 +29,7 @@ const getKeywordType = (columnType: ColumnType | null) => {
   const keywordType = keywordTypeDictionary[columnType];
   if (keywordType) return keywordType;
 
-  if (columnType.match(/string|text\(/)) {
+  if (columnType.match(/string|text|char.*|varchar.*/)) {
     return ts.SyntaxKind.StringKeyword;
   }
 
@@ -84,6 +86,27 @@ const createAttributeType = (attribute: Attribute) => {
       ts.factory.createIdentifier("Blob"),
       undefined
     );
+  }
+
+  // Date, DateTime cast
+  if (attribute.cast && ["date", "datetime"].includes(attribute.cast)) {
+    node = ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword);
+  }
+
+  // Json type
+  if (attribute.type === "json") {
+    if (attribute.cast === "array") {
+      node = ts.factory.createArrayTypeNode(
+        ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
+      );
+    }
+
+    if (attribute.cast === "object") {
+      node = ts.factory.createTypeReferenceNode("Record", [
+        ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
+        ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword),
+      ]);
+    }
   }
 
   // Enum type
