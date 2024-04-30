@@ -88,6 +88,22 @@ const createAttributeType = (attribute: Attribute) => {
     );
   }
 
+  // Json type
+  if (attribute.type === "json") {
+    if (attribute.cast === "array") {
+      node = ts.factory.createArrayTypeNode(
+        ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
+      );
+    }
+
+    if (attribute.cast === "object") {
+      node = ts.factory.createTypeReferenceNode("Record", [
+        ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
+        ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword),
+      ]);
+    }
+  }
+
   // Enum type
   if (attribute.cast && isEnum(attribute)) {
     // Create enum type node
