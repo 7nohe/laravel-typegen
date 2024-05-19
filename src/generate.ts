@@ -40,7 +40,9 @@ export async function generate(options: CLIOptions) {
   for (const modelPath of modelPaths) {
     const modelName = modelPath
       .replace(options.modelPath.replace(/\\/g, "/") + "/", "")
-      .replace(path.extname(modelPath), ""); // remove .php extension
+      .replace(path.extname(modelPath), "") // remove .php extension
+      .split("/")
+      .at(-1)!; // get only model name without directory
 
     createModelDirectory(modelName);
 
