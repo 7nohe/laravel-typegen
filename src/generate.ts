@@ -66,7 +66,7 @@ export async function generate(options: CLIOptions) {
     // Read model data from JSON file
     try {
       const modelJson = JSON.parse(
-        fs.readFileSync(path.join(tmpDir, `${modelName}.json`), "utf8")
+        fs.readFileSync(path.resolve(tmpDir, `${modelName}.json`), "utf8")
       ) as LaravelModelType;
       modelData.push(modelJson);
     } catch {

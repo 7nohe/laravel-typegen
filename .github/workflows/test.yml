@@ -19,17 +19,17 @@ jobs:
       - uses: pnpm/action-setup@v3
         with:
           version: 9
-      - name: install node.js
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "pnpm"
-      - name: install dependencies
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: run test
         run: sh test.sh
 
-      - name: archive generated files
+      - name: Archive generated files
         uses: actions/upload-artifact@v4
         with:
           name: generated-file-${{ matrix.os }}
