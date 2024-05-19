@@ -9,6 +9,7 @@ import {
   tmpDir,
 } from "./constants";
 import fs from "fs";
+import { defaultFormRequestPath } from "@7nohe/laravel-zodgen";
 
 export type CLIOptions = {
   output: string;
@@ -19,6 +20,7 @@ export type CLIOptions = {
   vendorRoutes: boolean;
   ignoreRouteDts: boolean;
   formRequest: boolean;
+  formRequestPath: string;
 };
 
 const program = new Command();
@@ -35,6 +37,11 @@ program
   .option("--vendor-routes", "Include routes defined by vendor packages", false)
   .option("--ignore-route-dts", "Ignore generating route.d.ts", false)
   .option("--form-request", "Generate types for FormRequests", false)
+  .option(
+    "--form-request-path <value>",
+    "Path to FormRequest files",
+    defaultFormRequestPath
+  )
   .parse();
 
 const options = program.opts<CLIOptions>();
