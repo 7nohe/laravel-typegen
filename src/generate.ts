@@ -50,7 +50,11 @@ export async function generate(options: CLIOptions) {
     const modelShowCommand = `php artisan model:show ${namespacedModel} --json > ${outputPath}`;
 
     try {
-      execSync(modelShowCommand);
+      if (process.env.SKIP_ARTISAN_COMMAND !== "true") {
+        execSync(modelShowCommand);
+      } else {
+        console.log(`Skipping ${modelShowCommand}`);
+      }
       const modelJson = JSON.parse(
         fs.readFileSync(path.join(tmpDir, `${modelName}.json`), "utf8")
       ) as LaravelModelType;
@@ -72,9 +76,14 @@ export async function generate(options: CLIOptions) {
   if (options.ziggy) {
     const vendorOption = options.vendorRoutes ? "" : "--except-vendor";
     const routeListCommand = `php artisan route:list ${vendorOption} --json > ${tmpDir}/route.json`;
-    execSync(routeListCommand);
+
+    if (process.env.SKIP_ARTISAN_COMMAND !== "true") {
+      execSync(routeListCommand);
+    } else {
+      console.log(`Skipping ${routeListCommand}`);
+    }
     const routeJson = JSON.parse(
-      fs.readFileSync(`${tmpDir}/route.json`, "utf8")
+      fs.readFileSync(path.resolve(tmpDir, "route.json"), "utf8")
     ) as LaravelRouteListType[];
 
     const routeSource = createRouteParamsSource(
@@ -83,13 +92,20 @@ export async function generate(options: CLIOptions) {
       options
     );
 
-    print(routeParamsFileName, routeSource, options.output ?? defaultOutputPath);
+    print(
+      routeParamsFileName,
+      routeSource,
+      options.output ?? defaultOutputPath
+    );
 
     // Copy route.d.ts
     if (!options.ignoreRouteDts) {
       fs.copyFileSync(
         path.resolve(__dirname, "..", "templates", indexDeclarationFileName),
-        path.resolve(options.output ?? defaultOutputPath, indexDeclarationFileName)
+        path.resolve(
+          options.output ?? defaultOutputPath,
+          indexDeclarationFileName
+        )
       );
     }
   }
@@ -98,10 +114,15 @@ export async function generate(options: CLIOptions) {
     // Generate types for form requests
     const rules = parseFormRequests(options.formRequestPath, true);
     const formRequestSource = createFormRequestTypes(rules);
-    print(formRequestsFileName, formRequestSource, options.output ?? defaultOutputPath);
+    print(
+      formRequestsFileName,
+      formRequestSource,
+      options.output ?? defaultOutputPath
+    );
   }
-
-  fs.rmSync(tmpDir, { recursive: true });
+  if (fs.existsSync(tmpDir) && process.env.KEEP_LARAVEL_JSON !== "true") {
+    fs.rmSync(tmpDir, { recursive: true });
+  }
 }
 
 const createModelDirectory = (modelName: string) => {

@@ -13,7 +13,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-13, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
@@ -26,40 +26,8 @@ jobs:
           cache: "pnpm"
       - name: install dependencies
         run: pnpm install --frozen-lockfile
-
-      - run: cp .env.example .env
-        working-directory: examples/laravel10-app
-
-      - name: Setup Docker on macOS
-        uses: douglascamata/setup-docker-macos-action@v1-alpha
-        if: startsWith(matrix.os, 'macos')
-
-      - name: composer install
-        run: docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/var/www/html" -w /var/www/html laravelsail/php81-composer:latest composer install --ignore-platform-reqs
-        working-directory: examples/laravel10-app
-
-      - name: start database
-        run: ./vendor/bin/sail up -d mysql
-        working-directory: examples/laravel10-app
-
-      - name: start laravel
-        run: ./vendor/bin/sail up -d
-        working-directory: examples/laravel10-app
-
-      - name: generate key
-        run: ./vendor/bin/sail artisan key:generate
-        working-directory: examples/laravel10-app
-
-      - name: migrate
-        run: ./vendor/bin/sail artisan migrate
-        working-directory: examples/laravel10-app
-
-      - name: npm install
-        run: ./vendor/bin/sail npm install
-        working-directory: examples/laravel10-app
-
-      - name: generate types
-        run: sh debug.sh
+      - name: run test
+        run: sh test.sh
 
       - name: archive generated files
         uses: actions/upload-artifact@v4

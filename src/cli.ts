@@ -54,7 +54,7 @@ try {
   });
 } catch {
   console.log("Failed to generate types.");
-  if (fs.existsSync(tmpDir)) {
+  if (fs.existsSync(tmpDir) && process.env.KEEP_LARAVEL_JSON !== "true") {
     // Clean up
     fs.rmSync(tmpDir, { recursive: true });
   }
