@@ -33,7 +33,7 @@ jobs:
       - name: install docker on macos
         if: matrix.os == 'macos-latest'
         run: |
-          brew install docker
+          brew install docker colima
           colima start
 
       - name: composer install
