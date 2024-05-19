@@ -15,10 +15,7 @@ import {
   tmpDir,
 } from "./constants";
 import path from "path";
-import {
-  parseFormRequests,
-  defaultFormRequestPath,
-} from "@7nohe/laravel-zodgen";
+import { parseFormRequests } from "@7nohe/laravel-zodgen";
 import { createFormRequestTypes } from "./formRequests/createFormRequestTypes";
 import { formatNamespaceForCommand, getPhpAst, getPhpNamespace } from "./utils";
 
@@ -99,7 +96,7 @@ export async function generate(options: CLIOptions) {
 
   if (options.formRequest) {
     // Generate types for form requests
-    const rules = parseFormRequests(defaultFormRequestPath, true);
+    const rules = parseFormRequests(options.formRequestPath, true);
     const formRequestSource = createFormRequestTypes(rules);
     print(formRequestsFileName, formRequestSource, options.output ?? defaultOutputPath);
   }
