@@ -20,12 +20,14 @@ import {
   defaultFormRequestPath,
 } from "@7nohe/laravel-zodgen";
 import { createFormRequestTypes } from "./formRequests/createFormRequestTypes";
+import { formatNamespaceForCommand, getPhpAst, getPhpNamespace } from "./utils";
 
 export async function generate(options: CLIOptions) {
   const parsedModelPath = path
     .join(options.modelPath, "**", "*.php")
     .replace(/\\/g, "/");
-  const models = sync(parsedModelPath).sort();
+  const modelPaths = sync(parsedModelPath).sort();
+
   const modelData: LaravelModelType[] = [];
   const parsedEnumPath = path
     .join(options.enumPath, "**", "*.php")
@@ -35,15 +37,21 @@ export async function generate(options: CLIOptions) {
     fs.mkdirSync(tmpDir);
   }
   // Generate models
-  for (const model of models) {
-    const modelName = model
+  for (const modelPath of modelPaths) {
+    const modelName = modelPath
       .replace(options.modelPath.replace(/\\/g, "/") + "/", "")
-      .replace(path.extname(model), ""); // remove .php extension
+      .replace(path.extname(modelPath), "") // remove .php extension
+      .split("/")
+      .at(-1)!; // get only model name without directory
+
     createModelDirectory(modelName);
-    const modelShowCommand = `php artisan model:show ${modelName} --json > ${path.join(
-      tmpDir,
-      `${modelName}.json`
-    )}`;
+
+    const namespacedModel =
+      getNamespaceForCommand(modelPath) + "\\\\" + modelName;
+    const outputPath = path.join(tmpDir, `${modelName}.json`);
+
+    const modelShowCommand = `php artisan model:show ${namespacedModel} --json > ${outputPath}`;
+
     try {
       execSync(modelShowCommand);
       const modelJson = JSON.parse(
@@ -65,8 +73,8 @@ export async function generate(options: CLIOptions) {
 
   // Generate types for ziggy
   if (options.ziggy) {
-    const routeListCommand = `php artisan route:list ${options.vendorRoutes ? "" : "--except-vendor"
-      } --json > ${tmpDir}/route.json`;
+    const vendorOption = options.vendorRoutes ? "" : "--except-vendor";
+    const routeListCommand = `php artisan route:list ${vendorOption} --json > ${tmpDir}/route.json`;
     execSync(routeListCommand);
     const routeJson = JSON.parse(
       fs.readFileSync(`${tmpDir}/route.json`, "utf8")
@@ -108,4 +116,25 @@ const createModelDirectory = (modelName: string) => {
   ) {
     fs.mkdirSync(path.join(tmpDir, ...modelNameArray));
   }
+};
+
+/**
+ * Cache for namespace by directory. Assume namespace is same when its directory is same
+ * e.g. { 'app/Models': 'App\Models', 'app-modules/{module}/Models': 'Modules/{Module}/Models', ... }
+ */
+const namespaceDictByDir: { [key: string]: string } = {};
+
+export const getNamespaceForCommand = (phpFilepath: string) => {
+  const dir = path.dirname(phpFilepath);
+
+  if (namespaceDictByDir[dir]) {
+    return namespaceDictByDir[dir];
+  }
+
+  const ast = getPhpAst(phpFilepath);
+  const namespace = getPhpNamespace(ast).name;
+  const namespaceForCommand = formatNamespaceForCommand(namespace);
+  namespaceDictByDir[dir] = namespaceForCommand;
+
+  return namespaceForCommand;
 };
