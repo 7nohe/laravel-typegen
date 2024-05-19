@@ -36,6 +36,7 @@ export async function generate(options: CLIOptions) {
   // Generate models
   for (const modelPath of modelPaths) {
     const modelName = modelPath
+      .replace(/\\/g, "/")
       .replace(options.modelPath.replace(/\\/g, "/") + "/", "")
       .replace(path.extname(modelPath), "") // remove .php extension
       .split("/")
@@ -65,8 +66,10 @@ export async function generate(options: CLIOptions) {
 
     // Read model data from JSON file
     try {
+      const jsonPath = path.resolve(tmpDir, `${modelName}.json`);
+      console.log(`Reading ${jsonPath}`);
       const modelJson = JSON.parse(
-        fs.readFileSync(path.resolve(tmpDir, `${modelName}.json`), "utf8")
+        fs.readFileSync(jsonPath, "utf8")
       ) as LaravelModelType;
       modelData.push(modelJson);
     } catch {
