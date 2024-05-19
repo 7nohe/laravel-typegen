@@ -30,6 +30,12 @@ jobs:
       - run: cp .env.example .env
         working-directory: examples/laravel10-app
 
+      - name: install docker on macos
+        if: matrix.os == 'macos-latest'
+        run: |
+          brew install docker
+          colima start
+
       - name: composer install
         run: docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/var/www/html" -w /var/www/html laravelsail/php81-composer:latest composer install --ignore-platform-reqs
         working-directory: examples/laravel10-app
