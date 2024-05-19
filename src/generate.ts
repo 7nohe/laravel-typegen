@@ -49,12 +49,22 @@ export async function generate(options: CLIOptions) {
 
     const modelShowCommand = `php artisan model:show ${namespacedModel} --json > ${outputPath}`;
 
+    // Run artisan command to get model data
     try {
       if (process.env.SKIP_ARTISAN_COMMAND !== "true") {
         execSync(modelShowCommand);
       } else {
         console.log(`Skipping ${modelShowCommand}`);
       }
+    } catch (e) {
+      console.log(
+        `Failed to get model data for ${modelName}'. You still can generate types by running ${modelShowCommand} manually and then run 'laravel-typegen' with SKIP_ARTISAN_COMMAND=true environment variable.`
+      );
+      console.error(e);
+    }
+
+    // Read model data from JSON file
+    try {
       const modelJson = JSON.parse(
         fs.readFileSync(path.join(tmpDir, `${modelName}.json`), "utf8")
       ) as LaravelModelType;
