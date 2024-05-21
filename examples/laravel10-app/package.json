@@ -1,28 +1,28 @@
 {
-    "private": true,
-    "scripts": {
-        "dev": "vite",
-        "build": "vite build",
-        "type:check": "vue-tsc --noEmit",
-        "typegen": "KEEP_LARAVEL_JSON=true node node_modules/@7nohe/laravel-typegen/dist/src/cli.js --ziggy --form-request",
-        "typegen:laravel-enum": "node node_modules/@7nohe/laravel-typegen/dist/src/cli.js --enum-path 'app/LaravelEnums' --laravel-enum"
-    },
-    "devDependencies": {
-        "@7nohe/laravel-typegen": "file:../../../laravel-typegen",
-        "@7nohe/laravel-zodgen": "^0.1.5",
-        "@inertiajs/vue3": "^1.0.8",
-        "@tailwindcss/forms": "^0.5.3",
-        "@types/ziggy-js": "^1.3.2",
-        "@vitejs/plugin-vue": "^4.1.0",
-        "autoprefixer": "^10.4.14",
-        "axios": "^1.3.4",
-        "laravel-vite-plugin": "^0.7.4",
-        "lodash": "^4.17.21",
-        "postcss": "^8.4.21",
-        "tailwindcss": "^3.2.7",
-        "vite": "^4.2.1",
-        "vue": "^3.2.47",
-        "vue-tsc": "^1.2.0",
-        "ziggy-js": "^1.5.0"
-    }
+	"private": true,
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"type:check": "vue-tsc --noEmit",
+		"typegen": "KEEP_LARAVEL_JSON=true node node_modules/@7nohe/laravel-typegen/dist/src/cli.js --ziggy --form-request",
+		"typegen:laravel-enum": "node node_modules/@7nohe/laravel-typegen/dist/src/cli.js --enum-path 'app/LaravelEnums' --laravel-enum"
+	},
+	"devDependencies": {
+		"@7nohe/laravel-typegen": "file:../../../laravel-typegen",
+		"@7nohe/laravel-zodgen": "^0.1.5",
+		"@inertiajs/vue3": "^1.0.8",
+		"@tailwindcss/forms": "^0.5.3",
+		"@types/ziggy-js": "^1.3.2",
+		"@vitejs/plugin-vue": "^4.1.0",
+		"autoprefixer": "^10.4.14",
+		"axios": "^1.3.4",
+		"laravel-vite-plugin": "^0.7.4",
+		"lodash": "^4.17.21",
+		"postcss": "^8.4.21",
+		"tailwindcss": "^3.2.7",
+		"vite": "^4.2.1",
+		"vue": "^3.2.47",
+		"vue-tsc": "^1.2.0",
+		"ziggy-js": "^1.5.0"
+	}
 }

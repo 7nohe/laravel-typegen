@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Post } from '@/types/model';
-import { Head, Link, usePage } from '@inertiajs/vue3';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import type { Post } from "@/types/model";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 
-const page = usePage<{ posts: Post[] }>()
-
+const page = usePage<{ posts: Post[] }>();
 </script>
 <template>
 

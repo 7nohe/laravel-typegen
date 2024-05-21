@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
-import { Paginate } from '@7nohe/laravel-typegen';
-import { User } from '@/types/model';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import type { User } from "@/types/model";
+import type { Paginate } from "@7nohe/laravel-typegen";
+import { Head, Link } from "@inertiajs/vue3";
 
 defineProps<{ users: Paginate<User> }>();
-
 </script>
 
 <template>

@@ -1,20 +1,19 @@
 <script setup lang="ts">
-import { User } from '@/types/model';
-import { Head, Link, usePage } from '@inertiajs/vue3';
+import type { User } from "@/types/model";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 
 defineProps({
-    canLogin: Boolean,
-    canRegister: Boolean,
-    laravelVersion: String,
-    phpVersion: String,
+	canLogin: Boolean,
+	canRegister: Boolean,
+	laravelVersion: String,
+	phpVersion: String,
 });
 
 const page = usePage<{
-    auth: {
-        user: User
-    }
-}>()
-
+	auth: {
+		user: User;
+	};
+}>();
 </script>
 
 <template>
