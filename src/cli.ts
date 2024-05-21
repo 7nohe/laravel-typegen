@@ -10,6 +10,9 @@ import {
 } from "./constants";
 import fs from "fs";
 import { defaultFormRequestPath } from "@7nohe/laravel-zodgen";
+import { consola } from "consola";
+import { colors } from "consola/utils";
+import path from "path";
 
 export type CLIOptions = {
   output: string;
@@ -46,14 +49,22 @@ program
 
 const options = program.opts<CLIOptions>();
 
-console.log(`Generating types...`);
+consola.box(`${colors.bgBlueBright(`Laravel Typegen v${packageJson.version}`)}
+
+[Options]
+${Object.entries(options)
+  .map(([key, value]) => `${key}: ${value}`)
+  .join("\n")}
+`);
 
 try {
   generate(options).then(() => {
-    console.log(`Types generated successfully!!`);
+    consola.success(
+      `Done! Generated types are available in ${path.resolve(options.output)}`
+    );
   });
 } catch {
-  console.log("Failed to generate types.");
+  consola.error("Failed to generate types.");
   if (fs.existsSync(tmpDir) && process.env.KEEP_LARAVEL_JSON !== "true") {
     // Clean up
     fs.rmSync(tmpDir, { recursive: true });

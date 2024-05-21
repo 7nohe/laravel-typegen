@@ -18,8 +18,19 @@ import path from "path";
 import { parseFormRequests } from "@7nohe/laravel-zodgen";
 import { createFormRequestTypes } from "./formRequests/createFormRequestTypes";
 import { formatNamespaceForCommand, getPhpAst, getPhpNamespace } from "./utils";
+import { consola } from "consola";
+import { colors } from "consola/utils";
+
+const modelLogPrefix = colors.bgBlueBright("[Model]");
+const routeLogPrefix = colors.bgGreenBright("[Route]");
+const formRequestLogPrefix = colors.bgYellowBright("[FormRequest]");
 
 export async function generate(options: CLIOptions) {
+  consola.info(
+    modelLogPrefix,
+    colors.blueBright("Start generating model types...")
+  );
+
   const parsedModelPath = path
     .join(options.modelPath, "**", "*.php")
     .replace(/\\/g, "/");
@@ -48,32 +59,46 @@ export async function generate(options: CLIOptions) {
       getNamespaceForCommand(modelPath) + "\\\\" + modelName;
     const outputPath = path.join(tmpDir, `${modelName}.json`);
 
-    const modelShowCommand = `php artisan model:show ${namespacedModel} --json > ${outputPath}`;
+    const modelShowCommand = `php artisan model:show ${namespacedModel} --json`;
 
     // Run artisan command to get model data
     try {
       if (process.env.SKIP_ARTISAN_COMMAND !== "true") {
-        execSync(modelShowCommand);
+        consola.start(
+          modelLogPrefix,
+          `Running '${colors.blueBright(modelShowCommand)}'`
+        );
+        const json = execSync(modelShowCommand).toString();
+        const dir = path.dirname(outputPath);
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir, { recursive: true });
+        }
+        fs.writeFileSync(outputPath, json);
+        consola.success(modelLogPrefix, `Saved ${modelName} to ${outputPath}`);
       } else {
-        console.log(`Skipping ${modelShowCommand}`);
+        consola.info(modelLogPrefix, `Skipping ${modelShowCommand}`);
       }
     } catch (e) {
-      console.log(
+      consola.info(
+        modelLogPrefix,
         `Failed to get model data for ${modelName}'. You still can generate types by running ${modelShowCommand} manually and then run 'laravel-typegen' with SKIP_ARTISAN_COMMAND=true environment variable.`
       );
-      console.error(e);
+      consola.error(modelLogPrefix, e);
     }
 
     // Read model data from JSON file
     try {
       const jsonPath = path.resolve(tmpDir, `${modelName}.json`);
-      console.log(`Reading ${jsonPath}`);
+      consola.start(modelLogPrefix, `Reading ${jsonPath}`);
       const modelJson = JSON.parse(
         fs.readFileSync(jsonPath, "utf8")
       ) as LaravelModelType;
       modelData.push(modelJson);
     } catch {
-      console.log(`Failed to generate ${modelName}. Skipping...`);
+      consola.warn(
+        modelLogPrefix,
+        `Failed to generate ${modelName}. Skipping...`
+      );
     }
   }
 
@@ -85,16 +110,43 @@ export async function generate(options: CLIOptions) {
   );
   print(modelFileName, modelSource, options.output ?? defaultOutputPath);
 
+  consola.success(
+    modelLogPrefix,
+    colors.blueBright("Model types generated successfully.")
+  );
+
   // Generate types for ziggy
   if (options.ziggy) {
+    consola.info(
+      routeLogPrefix,
+      colors.greenBright("Start generating route types...")
+    );
+
     const vendorOption = options.vendorRoutes ? "" : "--except-vendor";
-    const routeListCommand = `php artisan route:list ${vendorOption} --json > ${tmpDir}/route.json`;
+    const routeListCommand = `php artisan route:list ${vendorOption} --json`;
 
     if (process.env.SKIP_ARTISAN_COMMAND !== "true") {
-      execSync(routeListCommand);
+      consola.start(
+        routeLogPrefix,
+        `Running '${colors.greenBright(routeListCommand)}'`
+      );
+      const json = execSync(routeListCommand).toString();
+      const dir = path.dirname(path.resolve(tmpDir, "route.json"));
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, {
+          recursive: true,
+        });
+      }
+      fs.writeFileSync(path.resolve(tmpDir, "route.json"), json);
+      consola.success(
+        routeLogPrefix,
+        `Saved route.json to ${path.resolve(tmpDir, "route.json")}`
+      );
     } else {
-      console.log(`Skipping ${routeListCommand}`);
+      consola.warn(routeLogPrefix, `Failed to get route data. Skipping...`);
     }
+
+    consola.start(routeLogPrefix, "Reading route.json");
     const routeJson = JSON.parse(
       fs.readFileSync(path.resolve(tmpDir, "route.json"), "utf8")
     ) as LaravelRouteListType[];
@@ -111,6 +163,8 @@ export async function generate(options: CLIOptions) {
       options.output ?? defaultOutputPath
     );
 
+    consola.start(routeLogPrefix, "Copying route.d.ts...");
+
     // Copy route.d.ts
     if (!options.ignoreRouteDts) {
       fs.copyFileSync(
@@ -121,20 +175,43 @@ export async function generate(options: CLIOptions) {
         )
       );
     }
+
+    consola.success(
+      routeLogPrefix,
+      colors.greenBright("Route types generated successfully.")
+    );
   }
 
   if (options.formRequest) {
+    consola.start(
+      formRequestLogPrefix,
+      colors.yellowBright("Start generating form request types...")
+    );
+    consola.start(
+      formRequestLogPrefix,
+      `Parsing form requests from ${options.formRequestPath}...`
+    );
     // Generate types for form requests
     const rules = parseFormRequests(options.formRequestPath, true);
+    consola.success(formRequestLogPrefix, "Form requests parsed successfully.");
+
     const formRequestSource = createFormRequestTypes(rules);
     print(
       formRequestsFileName,
       formRequestSource,
       options.output ?? defaultOutputPath
     );
+
+    consola.success(
+      formRequestLogPrefix,
+      colors.yellowBright("Form request types generated successfully.")
+    );
   }
+
   if (fs.existsSync(tmpDir) && process.env.KEEP_LARAVEL_JSON !== "true") {
+    consola.start("Removing temporary files...");
     fs.rmSync(tmpDir, { recursive: true });
+    consola.success("Temporary files removed.");
   }
 }
 
