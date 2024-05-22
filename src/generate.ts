@@ -34,13 +34,22 @@ export async function generate(options: CLIOptions) {
   if (!fs.existsSync(tmpDir)) {
     fs.mkdirSync(tmpDir);
   }
+
+  let command = "php";
+
+  // sail option
+  const useSail = options.sail;
+  if (useSail) {
+    command = "./vendor/bin/sail"
+  }
+
   // Generate models
   for (const model of models) {
     const modelName = model
       .replace(options.modelPath.replace(/\\/g, "/") + "/", "")
       .replace(path.extname(model), ""); // remove .php extension
     createModelDirectory(modelName);
-    const modelShowCommand = `php artisan model:show ${modelName} --json > ${path.join(
+    const modelShowCommand = `${command} artisan model:show ${modelName} --json > ${path.join(
       tmpDir,
       `${modelName}.json`
     )}`;
@@ -65,8 +74,9 @@ export async function generate(options: CLIOptions) {
 
   // Generate types for ziggy
   if (options.ziggy) {
-    const routeListCommand = `php artisan route:list ${options.vendorRoutes ? "" : "--except-vendor"
-      } --json > ${tmpDir}/route.json`;
+    const routeListCommand = `${command} artisan route:list ${
+      options.vendorRoutes ? "" : "--except-vendor"
+    } --json > ${tmpDir}/route.json`;
     execSync(routeListCommand);
     const routeJson = JSON.parse(
       fs.readFileSync(`${tmpDir}/route.json`, "utf8")
@@ -77,9 +87,6 @@ export async function generate(options: CLIOptions) {
       routeJson,
       options
     );
-
-    print(routeParamsFileName, routeSource, options.output ?? defaultOutputPath);
-
     // Copy route.d.ts
     if (!options.ignoreRouteDts) {
       fs.copyFileSync(

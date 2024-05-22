@@ -19,6 +19,7 @@ export type CLIOptions = {
   vendorRoutes: boolean;
   ignoreRouteDts: boolean;
   formRequest: boolean;
+  sail: boolean;
 };
 
 const program = new Command();
@@ -35,6 +36,7 @@ program
   .option("--vendor-routes", "Include routes defined by vendor packages", false)
   .option("--ignore-route-dts", "Ignore generating route.d.ts", false)
   .option("--form-request", "Generate types for FormRequests", false)
+  .option("--sail", "Generate types via Laravel Sail", false)
   .parse();
 
 const options = program.opts<CLIOptions>();
