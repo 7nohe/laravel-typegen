@@ -33,6 +33,15 @@ export async function generate(options: CLIOptions) {
   if (!fs.existsSync(tmpDir)) {
     fs.mkdirSync(tmpDir);
   }
+
+  let command = "php";
+
+  // sail option
+  const useSail = options.sail;
+  if (useSail) {
+    command = "./vendor/bin/sail";
+  }
+
   // Generate models
   for (const modelPath of modelPaths) {
     const modelName = modelPath
@@ -47,7 +56,7 @@ export async function generate(options: CLIOptions) {
       getNamespaceForCommand(modelPath) + "\\\\" + modelName;
     const outputPath = path.join(tmpDir, `${modelName}.json`);
 
-    const modelShowCommand = `php artisan model:show ${namespacedModel} --json > ${outputPath}`;
+    const modelShowCommand = `${command} artisan model:show ${namespacedModel} --json > ${outputPath}`;
 
     try {
       execSync(modelShowCommand);
@@ -71,7 +80,7 @@ export async function generate(options: CLIOptions) {
   // Generate types for ziggy
   if (options.ziggy) {
     const vendorOption = options.vendorRoutes ? "" : "--except-vendor";
-    const routeListCommand = `php artisan route:list ${vendorOption} --json > ${tmpDir}/route.json`;
+    const routeListCommand = `${command} artisan route:list ${vendorOption} --json > ${tmpDir}/route.json`;
     execSync(routeListCommand);
     const routeJson = JSON.parse(
       fs.readFileSync(`${tmpDir}/route.json`, "utf8")
@@ -82,14 +91,14 @@ export async function generate(options: CLIOptions) {
       routeJson,
       options
     );
-
-    print(routeParamsFileName, routeSource, options.output ?? defaultOutputPath);
-
     // Copy route.d.ts
     if (!options.ignoreRouteDts) {
       fs.copyFileSync(
         path.resolve(__dirname, "..", "templates", indexDeclarationFileName),
-        path.resolve(options.output ?? defaultOutputPath, indexDeclarationFileName)
+        path.resolve(
+          options.output ?? defaultOutputPath,
+          indexDeclarationFileName
+        )
       );
     }
   }
@@ -98,7 +107,11 @@ export async function generate(options: CLIOptions) {
     // Generate types for form requests
     const rules = parseFormRequests(options.formRequestPath, true);
     const formRequestSource = createFormRequestTypes(rules);
-    print(formRequestsFileName, formRequestSource, options.output ?? defaultOutputPath);
+    print(
+      formRequestsFileName,
+      formRequestSource,
+      options.output ?? defaultOutputPath
+    );
   }
 
   fs.rmSync(tmpDir, { recursive: true });

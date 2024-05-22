@@ -20,6 +20,7 @@ export type CLIOptions = {
   vendorRoutes: boolean;
   ignoreRouteDts: boolean;
   formRequest: boolean;
+  sail: boolean;
   formRequestPath: string;
 };
 
@@ -37,6 +38,7 @@ program
   .option("--vendor-routes", "Include routes defined by vendor packages", false)
   .option("--ignore-route-dts", "Ignore generating route.d.ts", false)
   .option("--form-request", "Generate types for FormRequests", false)
+  .option("--sail", "Generate types via Laravel Sail", false)
   .option(
     "--form-request-path <value>",
     "Path to FormRequest files",
