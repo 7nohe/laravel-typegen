@@ -15,17 +15,16 @@ import {
   tmpDir,
 } from "./constants";
 import path from "path";
-import {
-  parseFormRequests,
-  defaultFormRequestPath,
-} from "@7nohe/laravel-zodgen";
+import { parseFormRequests } from "@7nohe/laravel-zodgen";
 import { createFormRequestTypes } from "./formRequests/createFormRequestTypes";
+import { formatNamespaceForCommand, getPhpAst, getPhpNamespace } from "./utils";
 
 export async function generate(options: CLIOptions) {
   const parsedModelPath = path
     .join(options.modelPath, "**", "*.php")
     .replace(/\\/g, "/");
-  const models = sync(parsedModelPath).sort();
+  const modelPaths = sync(parsedModelPath).sort();
+
   const modelData: LaravelModelType[] = [];
   const parsedEnumPath = path
     .join(options.enumPath, "**", "*.php")
@@ -40,19 +39,25 @@ export async function generate(options: CLIOptions) {
   // sail option
   const useSail = options.sail;
   if (useSail) {
-    command = "./vendor/bin/sail"
+    command = "./vendor/bin/sail";
   }
 
   // Generate models
-  for (const model of models) {
-    const modelName = model
+  for (const modelPath of modelPaths) {
+    const modelName = modelPath
       .replace(options.modelPath.replace(/\\/g, "/") + "/", "")
-      .replace(path.extname(model), ""); // remove .php extension
+      .replace(path.extname(modelPath), "") // remove .php extension
+      .split("/")
+      .at(-1)!; // get only model name without directory
+
     createModelDirectory(modelName);
-    const modelShowCommand = `${command} artisan model:show ${modelName} --json > ${path.join(
-      tmpDir,
-      `${modelName}.json`
-    )}`;
+
+    const namespacedModel =
+      getNamespaceForCommand(modelPath) + "\\\\" + modelName;
+    const outputPath = path.join(tmpDir, `${modelName}.json`);
+
+    const modelShowCommand = `${command} artisan model:show ${namespacedModel} --json > ${outputPath}`;
+
     try {
       execSync(modelShowCommand);
       const modelJson = JSON.parse(
@@ -74,9 +79,8 @@ export async function generate(options: CLIOptions) {
 
   // Generate types for ziggy
   if (options.ziggy) {
-    const routeListCommand = `${command} artisan route:list ${
-      options.vendorRoutes ? "" : "--except-vendor"
-    } --json > ${tmpDir}/route.json`;
+    const vendorOption = options.vendorRoutes ? "" : "--except-vendor";
+    const routeListCommand = `${command} artisan route:list ${vendorOption} --json > ${tmpDir}/route.json`;
     execSync(routeListCommand);
     const routeJson = JSON.parse(
       fs.readFileSync(`${tmpDir}/route.json`, "utf8")
@@ -91,16 +95,23 @@ export async function generate(options: CLIOptions) {
     if (!options.ignoreRouteDts) {
       fs.copyFileSync(
         path.resolve(__dirname, "..", "templates", indexDeclarationFileName),
-        path.resolve(options.output ?? defaultOutputPath, indexDeclarationFileName)
+        path.resolve(
+          options.output ?? defaultOutputPath,
+          indexDeclarationFileName
+        )
       );
     }
   }
 
   if (options.formRequest) {
     // Generate types for form requests
-    const rules = parseFormRequests(defaultFormRequestPath, true);
+    const rules = parseFormRequests(options.formRequestPath, true);
     const formRequestSource = createFormRequestTypes(rules);
-    print(formRequestsFileName, formRequestSource, options.output ?? defaultOutputPath);
+    print(
+      formRequestsFileName,
+      formRequestSource,
+      options.output ?? defaultOutputPath
+    );
   }
 
   fs.rmSync(tmpDir, { recursive: true });
@@ -115,4 +126,25 @@ const createModelDirectory = (modelName: string) => {
   ) {
     fs.mkdirSync(path.join(tmpDir, ...modelNameArray));
   }
+};
+
+/**
+ * Cache for namespace by directory. Assume namespace is same when its directory is same
+ * e.g. { 'app/Models': 'App\Models', 'app-modules/{module}/Models': 'Modules/{Module}/Models', ... }
+ */
+const namespaceDictByDir: { [key: string]: string } = {};
+
+export const getNamespaceForCommand = (phpFilepath: string) => {
+  const dir = path.dirname(phpFilepath);
+
+  if (namespaceDictByDir[dir]) {
+    return namespaceDictByDir[dir];
+  }
+
+  const ast = getPhpAst(phpFilepath);
+  const namespace = getPhpNamespace(ast).name;
+  const namespaceForCommand = formatNamespaceForCommand(namespace);
+  namespaceDictByDir[dir] = namespaceForCommand;
+
+  return namespaceForCommand;
 };
