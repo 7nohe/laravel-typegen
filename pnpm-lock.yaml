@@ -27,15 +27,74 @@ importers:
         specifier: ^5.4.5
         version: 5.4.5
     devDependencies:
+      '@biomejs/biome':
+        specifier: 1.7.3
+        version: 1.7.3
       '@types/node':
         specifier: ^20.11.16
         version: 20.11.16
+      lefthook:
+        specifier: ^1.6.12
+        version: 1.6.12
 
 packages:
 
   '@7nohe/laravel-zodgen@0.1.6':
     resolution: {integrity: sha512-HYp1FeJ14fUnU4C2z74cCQEf6c3nS932LURg98K85KJnnHoGmyNw9hSO4/YLWCZKBtlnPyUBGgEpyuDyyhKAYg==}
     hasBin: true
+
+  '@biomejs/biome@1.7.3':
+    resolution: {integrity: sha512-ogFQI+fpXftr+tiahA6bIXwZ7CSikygASdqMtH07J2cUzrpjyTMVc9Y97v23c7/tL1xCZhM+W9k4hYIBm7Q6cQ==}
+    engines: {node: '>=14.21.3'}
+    hasBin: true
+
+  '@biomejs/cli-darwin-arm64@1.7.3':
+    resolution: {integrity: sha512-eDvLQWmGRqrPIRY7AIrkPHkQ3visEItJKkPYSHCscSDdGvKzYjmBJwG1Gu8+QC5ed6R7eiU63LEC0APFBobmfQ==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@biomejs/cli-darwin-x64@1.7.3':
+    resolution: {integrity: sha512-JXCaIseKRER7dIURsVlAJacnm8SG5I0RpxZ4ya3dudASYUc68WGl4+FEN03ABY3KMIq7hcK1tzsJiWlmXyosZg==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@biomejs/cli-linux-arm64-musl@1.7.3':
+    resolution: {integrity: sha512-c8AlO45PNFZ1BYcwaKzdt46kYbuP6xPGuGQ6h4j3XiEDpyseRRUy/h+6gxj07XovmyxKnSX9GSZ6nVbZvcVUAw==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@biomejs/cli-linux-arm64@1.7.3':
+    resolution: {integrity: sha512-phNTBpo7joDFastnmZsFjYcDYobLTx4qR4oPvc9tJ486Bd1SfEVPHEvJdNJrMwUQK56T+TRClOQd/8X1nnjA9w==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@biomejs/cli-linux-x64-musl@1.7.3':
+    resolution: {integrity: sha512-UdEHKtYGWEX3eDmVWvQeT+z05T9/Sdt2+F/7zmMOFQ7boANeX8pcO6EkJPK3wxMudrApsNEKT26rzqK6sZRTRA==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [linux]
+
+  '@biomejs/cli-linux-x64@1.7.3':
+    resolution: {integrity: sha512-vnedYcd5p4keT3iD48oSKjOIRPYcjSNNbd8MO1bKo9ajg3GwQXZLAH+0Cvlr+eMsO67/HddWmscSQwTFrC/uPA==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [linux]
+
+  '@biomejs/cli-win32-arm64@1.7.3':
+    resolution: {integrity: sha512-unNCDqUKjujYkkSxs7gFIfdasttbDC4+z0kYmcqzRk6yWVoQBL4dNLcCbdnJS+qvVDNdI9rHp2NwpQ0WAdla4Q==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@biomejs/cli-win32-x64@1.7.3':
+    resolution: {integrity: sha512-ZmByhbrnmz/UUFYB622CECwhKIPjJLLPr5zr3edhu04LzbfcOrz16VYeNq5dpO1ADG70FORhAJkaIGdaVBG00w==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [win32]
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -128,6 +187,50 @@ packages:
   jackspeak@2.3.6:
     resolution: {integrity: sha512-N3yCS/NegsOBokc8GAdM8UcmfsKiSS8cipheD/nivzr700H+nsMOxJjQnvwOcRYVuFkdH0wGUvW2WbXGmrZGbQ==}
     engines: {node: '>=14'}
+
+  lefthook-darwin-arm64@1.6.12:
+    resolution: {integrity: sha512-IJa50i+78nGxtSvnxLSDfSjBjjM7Ixl03V4+yl3Kdn+S+FwzEZet3LYTLbnKFUVy9Bg23obI3yXgwUx+tJjFXg==}
+    cpu: [arm64]
+    os: [darwin]
+
+  lefthook-darwin-x64@1.6.12:
+    resolution: {integrity: sha512-h11ByUtwM78FShgWgSUyyZtwKW6pjYfYvTygw24c/lZXKjupfowK5Ps5A73hCsjr0AEJNVpgW1S5Jd22gIJJCA==}
+    cpu: [x64]
+    os: [darwin]
+
+  lefthook-freebsd-arm64@1.6.12:
+    resolution: {integrity: sha512-Aw1+AosL8r/LFSVKG7i8GI1FpHnWFG66/6DBDUgCwNAwhNCXt7tERAM8dj9S6EqmqHCQCC0nI/6qKNBsFPk7Ow==}
+    cpu: [arm64]
+    os: [freebsd]
+
+  lefthook-freebsd-x64@1.6.12:
+    resolution: {integrity: sha512-G8Dg7UuRstXrqaEA8MSOZikz6PpjPUQu3QmiihzcyGdzI76jFsmjJb2vkrnvMsH9u2gWb3J4sp3TULhbMHXwSw==}
+    cpu: [x64]
+    os: [freebsd]
+
+  lefthook-linux-arm64@1.6.12:
+    resolution: {integrity: sha512-fwO0i6x5EPelL66EwaySzGzvVbN2vLFZDUWuTi8nZzEgBsCBuG0mORxZg91cNCGLRPT3sgzWPraTkyzIJa7kHg==}
+    cpu: [arm64]
+    os: [linux]
+
+  lefthook-linux-x64@1.6.12:
+    resolution: {integrity: sha512-pRAZKZhSoirjRwDF0TrqxgkeXtUmJqaUi0kGmMJmutToqo9IXQcnpueVmyV9Z1m6lLJn4PpKoFydY6tFXqvyNQ==}
+    cpu: [x64]
+    os: [linux]
+
+  lefthook-windows-arm64@1.6.12:
+    resolution: {integrity: sha512-jMMIoqNKtiqGrwyWeN3JXGXi7H7iAXsGB5v4DkcUbdw9y50qhruxWz84I2PoxwYmZVeMxRR+VpYvS7nOvBmzWA==}
+    cpu: [arm64]
+    os: [win32]
+
+  lefthook-windows-x64@1.6.12:
+    resolution: {integrity: sha512-XqEBVIhp/Fd1Fs+VBlPhrSJlUkyXEJuxQmiYSYow3C18RNpQQrJFVFpz0wE/IDTn2jOXx+p5+hcdlJb+s6bnpA==}
+    cpu: [x64]
+    os: [win32]
+
+  lefthook@1.6.12:
+    resolution: {integrity: sha512-SoHhB0L1D5twH5KKsGAT1h4qF+RhGfPo/JC5z60H0RDuFWtSwFNOeFpT4Qa7XwM6J9c1fvqZzOH9/4XF7dG9Uw==}
+    hasBin: true
 
   lru-cache@10.2.0:
     resolution: {integrity: sha512-2bIM8x+VAf6JT4bKAljS1qUWgMsqZRPGJS6FSahIMPVvctcNhyVp7AJu7quxOW9jwkryBReKZY5tY5JYv2n/7Q==}
@@ -226,6 +329,41 @@ snapshots:
       typescript: 5.4.5
       zod: 3.21.4
 
+  '@biomejs/biome@1.7.3':
+    optionalDependencies:
+      '@biomejs/cli-darwin-arm64': 1.7.3
+      '@biomejs/cli-darwin-x64': 1.7.3
+      '@biomejs/cli-linux-arm64': 1.7.3
+      '@biomejs/cli-linux-arm64-musl': 1.7.3
+      '@biomejs/cli-linux-x64': 1.7.3
+      '@biomejs/cli-linux-x64-musl': 1.7.3
+      '@biomejs/cli-win32-arm64': 1.7.3
+      '@biomejs/cli-win32-x64': 1.7.3
+
+  '@biomejs/cli-darwin-arm64@1.7.3':
+    optional: true
+
+  '@biomejs/cli-darwin-x64@1.7.3':
+    optional: true
+
+  '@biomejs/cli-linux-arm64-musl@1.7.3':
+    optional: true
+
+  '@biomejs/cli-linux-arm64@1.7.3':
+    optional: true
+
+  '@biomejs/cli-linux-x64-musl@1.7.3':
+    optional: true
+
+  '@biomejs/cli-linux-x64@1.7.3':
+    optional: true
+
+  '@biomejs/cli-win32-arm64@1.7.3':
+    optional: true
+
+  '@biomejs/cli-win32-x64@1.7.3':
+    optional: true
+
   '@isaacs/cliui@8.0.2':
     dependencies:
       string-width: 5.1.2
@@ -313,6 +451,41 @@ snapshots:
       '@isaacs/cliui': 8.0.2
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
+
+  lefthook-darwin-arm64@1.6.12:
+    optional: true
+
+  lefthook-darwin-x64@1.6.12:
+    optional: true
+
+  lefthook-freebsd-arm64@1.6.12:
+    optional: true
+
+  lefthook-freebsd-x64@1.6.12:
+    optional: true
+
+  lefthook-linux-arm64@1.6.12:
+    optional: true
+
+  lefthook-linux-x64@1.6.12:
+    optional: true
+
+  lefthook-windows-arm64@1.6.12:
+    optional: true
+
+  lefthook-windows-x64@1.6.12:
+    optional: true
+
+  lefthook@1.6.12:
+    optionalDependencies:
+      lefthook-darwin-arm64: 1.6.12
+      lefthook-darwin-x64: 1.6.12
+      lefthook-freebsd-arm64: 1.6.12
+      lefthook-freebsd-x64: 1.6.12
+      lefthook-linux-arm64: 1.6.12
+      lefthook-linux-x64: 1.6.12
+      lefthook-windows-arm64: 1.6.12
+      lefthook-windows-x64: 1.6.12
 
   lru-cache@10.2.0: {}
 

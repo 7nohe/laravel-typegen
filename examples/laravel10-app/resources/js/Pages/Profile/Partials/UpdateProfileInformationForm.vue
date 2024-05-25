@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { User } from '@/types/model';
-import { Link, useForm, usePage } from '@inertiajs/vue3';
+import InputError from "@/Components/InputError.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
+import type { User } from "@/types/model";
+import { Link, useForm, usePage } from "@inertiajs/vue3";
 
 const props = defineProps({
-    mustVerifyEmail: Boolean,
-    status: String,
+	mustVerifyEmail: Boolean,
+	status: String,
 });
 
 const user = usePage<{
-        auth: {
-            user: User
-        }
+	auth: {
+		user: User;
+	};
 }>().props.auth.user;
 
 const form = useForm({
-    name: user.name,
-    email: user.email,
+	name: user.name,
+	email: user.email,
 });
 </script>
 

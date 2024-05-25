@@ -1,0 +1,22 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.7.3/schema.json",
+	"organizeImports": {
+		"enabled": true
+	},
+	"files": {
+		"ignore": [
+			"dist",
+			"examples/laravel10-app/resources/js/types",
+			"examples/laravel10-app/resources/js/ziggy.js",
+			"examples/laravel10-app/public",
+			"examples/laravel10-app/composer.json",
+			"vendor"
+		]
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true
+		}
+	}
+}

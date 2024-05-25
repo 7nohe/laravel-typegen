@@ -1,19 +1,17 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "esModuleInterop": true,
-    "noImplicitAny": true,
-    "downlevelIteration": true,
-    "resolveJsonModule": true,
-    "outDir": "dist",
-    "lib": ["ESNext", "DOM"],
-    "declaration": true,
-    "target": "ESNext"
-  },
-  "include": [
-    "src"
-  ],
+	"compilerOptions": {
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"strict": true,
+		"esModuleInterop": true,
+		"noImplicitAny": true,
+		"downlevelIteration": true,
+		"resolveJsonModule": true,
+		"outDir": "dist",
+		"lib": ["ESNext", "DOM"],
+		"declaration": true,
+		"target": "ESNext"
+	},
+	"include": ["src"]
 }
