@@ -14,6 +14,9 @@ importers:
       commander:
         specifier: ^12.0.0
         version: 12.0.0
+      consola:
+        specifier: ^3.2.3
+        version: 3.2.3
       glob:
         specifier: ^10.3.12
         version: 10.3.12
@@ -81,6 +84,10 @@ packages:
   commander@12.0.0:
     resolution: {integrity: sha512-MwVNWlYjDTtOjX5PiD7o5pK0UrFU/OYgcJfjjK4RaHZETNtjJqrZa9Y9ds88+A+f+d5lv+561eZ+yCKoS3gbAA==}
     engines: {node: '>=18'}
+
+  consola@3.2.3:
+    resolution: {integrity: sha512-I5qxpzLv+sJhTVEoLYNcTW+bThDCPsit0vLNKShZx6rLtpilNpmmeTPaeqJb9ZE9dV3DGaeby6Vuhrw38WjeyQ==}
+    engines: {node: ^14.18.0 || >=16.10.0}
 
   cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
@@ -260,6 +267,8 @@ snapshots:
   commander@10.0.0: {}
 
   commander@12.0.0: {}
+
+  consola@3.2.3: {}
 
   cross-spawn@7.0.3:
     dependencies:
