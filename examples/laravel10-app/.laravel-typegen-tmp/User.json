@@ -126,7 +126,11 @@
 		}
 	],
 	"relations": [
-		{ "name": "posts", "type": "HasMany", "related": "App\\Models\\Post" },
+		{
+			"name": "posts",
+			"type": "HasMany",
+			"related": "App\\Models\\Post"
+		},
 		{
 			"name": "userContacts",
 			"type": "HasMany",

@@ -90,7 +90,11 @@
 		}
 	],
 	"relations": [
-		{ "name": "author", "type": "BelongsTo", "related": "App\\Models\\User" }
+		{
+			"name": "author",
+			"type": "BelongsTo",
+			"related": "App\\Models\\User"
+		}
 	],
 	"observers": []
 }
