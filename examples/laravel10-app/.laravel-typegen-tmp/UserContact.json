@@ -66,11 +66,7 @@
 		}
 	],
 	"relations": [
-		{
-			"name": "user",
-			"type": "BelongsTo",
-			"related": "App\\Models\\User"
-		}
+		{ "name": "user", "type": "BelongsTo", "related": "App\\Models\\User" }
 	],
 	"observers": []
 }
