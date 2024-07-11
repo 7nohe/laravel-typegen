@@ -56,9 +56,7 @@ export async function generate(options: CLIOptions) {
 
 		createModelDirectory(modelName);
 
-		const namespacedModel = `${getNamespaceForCommand(
-			modelPath,
-		)}\\\\${modelName}`;
+		const namespacedModel = `${getNamespaceForCommand(modelPath)}/${modelName}`;
 		const outputPath = path.join(tmpDir, `${modelName}.json`);
 
 		const modelShowCommand = `php artisan model:show ${namespacedModel} --json`;

@@ -20,7 +20,7 @@ export const convertCamelToSnake = (camelCaseString: string): string => {
 };
 
 export const formatNamespaceForCommand = (namespace: string): string => {
-	return namespace.replaceAll(/\\/g, "\\\\");
+	return namespace.replaceAll(/\\/g, "/");
 };
 
 export const getPhpAst = (phpFilePath: string): Program => {
