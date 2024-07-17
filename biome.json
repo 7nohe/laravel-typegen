@@ -10,7 +10,9 @@
       "examples/laravel10-app/resources/js/ziggy.js",
       "examples/laravel10-app/public",
       "examples/laravel10-app/composer.json",
-      "vendor"
+      "examples/laravel10-app/.laravel-typegen-tmp/*",
+      "vendor",
+      "**/*.vue"
     ]
   },
   "linter": {
