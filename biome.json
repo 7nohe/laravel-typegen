@@ -11,8 +11,7 @@
       "examples/laravel10-app/public",
       "examples/laravel10-app/composer.json",
       "examples/laravel10-app/.laravel-typegen-tmp/*",
-      "vendor",
-      "**/*.vue"
+      "vendor"
     ]
   },
   "linter": {

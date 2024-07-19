@@ -7,15 +7,15 @@ import GuestLayout from "@/Layouts/GuestLayout.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 
 defineProps({
-	status: String,
+  status: String,
 });
 
 const form = useForm({
-	email: "",
+  email: "",
 });
 
 const submit = () => {
-	form.post(route("password.email"));
+  form.post(route("password.email"));
 };
 </script>
 
