@@ -11,9 +11,9 @@ import { ref } from "vue";
 const showingNavigationDropdown = ref(false);
 
 const page = usePage<{
-	auth: {
-		user: User;
-	};
+  auth: {
+    user: User;
+  };
 }>();
 </script>
 

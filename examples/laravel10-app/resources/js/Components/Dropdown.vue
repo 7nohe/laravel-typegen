@@ -2,40 +2,40 @@
 import { computed, onMounted, onUnmounted, ref } from "vue";
 
 const props = defineProps({
-	align: {
-		default: "right",
-	},
-	width: {
-		default: "48",
-	},
-	contentClasses: {
-		default: () => ["py-1", "bg-white"],
-	},
+  align: {
+    default: "right",
+  },
+  width: {
+    default: "48",
+  },
+  contentClasses: {
+    default: () => ["py-1", "bg-white"],
+  },
 });
 
 const closeOnEscape = (e: KeyboardEvent) => {
-	if (open.value && e.key === "Escape") {
-		open.value = false;
-	}
+  if (open.value && e.key === "Escape") {
+    open.value = false;
+  }
 };
 
 onMounted(() => document.addEventListener("keydown", closeOnEscape));
 onUnmounted(() => document.removeEventListener("keydown", closeOnEscape));
 
 const widthClass = computed(() => {
-	return {
-		48: "w-48",
-	}[props.width.toString()];
+  return {
+    48: "w-48",
+  }[props.width.toString()];
 });
 
 const alignmentClasses = computed(() => {
-	if (props.align === "left") {
-		return "origin-top-left left-0";
-	}
-	if (props.align === "right") {
-		return "origin-top-right right-0";
-	}
-	return "origin-top";
+  if (props.align === "left") {
+    return "origin-top-left left-0";
+  }
+  if (props.align === "right") {
+    return "origin-top-right right-0";
+  }
+  return "origin-top";
 });
 
 const open = ref(false);

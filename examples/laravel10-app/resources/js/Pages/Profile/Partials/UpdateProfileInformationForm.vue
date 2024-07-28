@@ -7,19 +7,19 @@ import type { User } from "@/types/model";
 import { Link, useForm, usePage } from "@inertiajs/vue3";
 
 const props = defineProps({
-	mustVerifyEmail: Boolean,
-	status: String,
+  mustVerifyEmail: Boolean,
+  status: String,
 });
 
 const user = usePage<{
-	auth: {
-		user: User;
-	};
+  auth: {
+    user: User;
+  };
 }>().props.auth.user;
 
 const form = useForm({
-	name: user.name,
-	email: user.email,
+  name: user.name,
+  email: user.email,
 });
 </script>
 

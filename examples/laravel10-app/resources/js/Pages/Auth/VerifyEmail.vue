@@ -5,17 +5,17 @@ import { Head, Link, useForm } from "@inertiajs/vue3";
 import { computed } from "vue";
 
 const props = defineProps({
-	status: String,
+  status: String,
 });
 
 const form = useForm({});
 
 const submit = () => {
-	form.post(route("verification.send"));
+  form.post(route("verification.send"));
 };
 
 const verificationLinkSent = computed(
-	() => props.status === "verification-link-sent",
+  () => props.status === "verification-link-sent",
 );
 </script>
 
