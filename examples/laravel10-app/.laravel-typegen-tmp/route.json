@@ -1,239 +1,239 @@
 [
-	{
-		"domain": null,
-		"method": "GET|HEAD",
-		"uri": "/",
-		"name": null,
-		"action": "Closure",
-		"middleware": ["web"]
-	},
-	{
-		"domain": null,
-		"method": "GET|HEAD",
-		"uri": "api/user",
-		"name": null,
-		"action": "Closure",
-		"middleware": ["api", "App\\Http\\Middleware\\Authenticate:sanctum"]
-	},
-	{
-		"domain": null,
-		"method": "GET|HEAD",
-		"uri": "confirm-password",
-		"name": "password.confirm",
-		"action": "App\\Http\\Controllers\\Auth\\ConfirmablePasswordController@show",
-		"middleware": ["web", "App\\Http\\Middleware\\Authenticate"]
-	},
-	{
-		"domain": null,
-		"method": "POST",
-		"uri": "confirm-password",
-		"name": null,
-		"action": "App\\Http\\Controllers\\Auth\\ConfirmablePasswordController@store",
-		"middleware": ["web", "App\\Http\\Middleware\\Authenticate"]
-	},
-	{
-		"domain": null,
-		"method": "GET|HEAD",
-		"uri": "dashboard",
-		"name": "dashboard",
-		"action": "App\\Http\\Controllers\\DashboardController",
-		"middleware": [
-			"web",
-			"App\\Http\\Middleware\\Authenticate",
-			"Illuminate\\Auth\\Middleware\\EnsureEmailIsVerified"
-		]
-	},
-	{
-		"domain": null,
-		"method": "POST",
-		"uri": "email/verification-notification",
-		"name": "verification.send",
-		"action": "App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController@store",
-		"middleware": [
-			"web",
-			"App\\Http\\Middleware\\Authenticate",
-			"Illuminate\\Routing\\Middleware\\ThrottleRequests:6,1"
-		]
-	},
-	{
-		"domain": null,
-		"method": "GET|HEAD",
-		"uri": "forgot-password",
-		"name": "password.request",
-		"action": "App\\Http\\Controllers\\Auth\\PasswordResetLinkController@create",
-		"middleware": ["web", "App\\Http\\Middleware\\RedirectIfAuthenticated"]
-	},
-	{
-		"domain": null,
-		"method": "POST",
-		"uri": "forgot-password",
-		"name": "password.email",
-		"action": "App\\Http\\Controllers\\Auth\\PasswordResetLinkController@store",
-		"middleware": ["web", "App\\Http\\Middleware\\RedirectIfAuthenticated"]
-	},
-	{
-		"domain": null,
-		"method": "GET|HEAD",
-		"uri": "login",
-		"name": "login",
-		"action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@create",
-		"middleware": ["web", "App\\Http\\Middleware\\RedirectIfAuthenticated"]
-	},
-	{
-		"domain": null,
-		"method": "POST",
-		"uri": "login",
-		"name": null,
-		"action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@store",
-		"middleware": ["web", "App\\Http\\Middleware\\RedirectIfAuthenticated"]
-	},
-	{
-		"domain": null,
-		"method": "POST",
-		"uri": "logout",
-		"name": "logout",
-		"action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@destroy",
-		"middleware": ["web", "App\\Http\\Middleware\\Authenticate"]
-	},
-	{
-		"domain": null,
-		"method": "PUT",
-		"uri": "password",
-		"name": "password.update",
-		"action": "App\\Http\\Controllers\\Auth\\PasswordController@update",
-		"middleware": ["web", "App\\Http\\Middleware\\Authenticate"]
-	},
-	{
-		"domain": null,
-		"method": "GET|HEAD",
-		"uri": "posts",
-		"name": "posts.index",
-		"action": "App\\Http\\Controllers\\PostsController@index",
-		"middleware": ["web"]
-	},
-	{
-		"domain": null,
-		"method": "POST",
-		"uri": "posts",
-		"name": "posts.store",
-		"action": "App\\Http\\Controllers\\PostsController@store",
-		"middleware": ["web"]
-	},
-	{
-		"domain": null,
-		"method": "GET|HEAD",
-		"uri": "posts/create",
-		"name": "posts.create",
-		"action": "App\\Http\\Controllers\\PostsController@create",
-		"middleware": ["web"]
-	},
-	{
-		"domain": null,
-		"method": "GET|HEAD",
-		"uri": "posts/{post}",
-		"name": "posts.show",
-		"action": "App\\Http\\Controllers\\PostsController@show",
-		"middleware": ["web"]
-	},
-	{
-		"domain": null,
-		"method": "PUT|PATCH",
-		"uri": "posts/{post}",
-		"name": "posts.update",
-		"action": "App\\Http\\Controllers\\PostsController@update",
-		"middleware": ["web"]
-	},
-	{
-		"domain": null,
-		"method": "DELETE",
-		"uri": "posts/{post}",
-		"name": "posts.destroy",
-		"action": "App\\Http\\Controllers\\PostsController@destroy",
-		"middleware": ["web"]
-	},
-	{
-		"domain": null,
-		"method": "GET|HEAD",
-		"uri": "posts/{post}/edit",
-		"name": "posts.edit",
-		"action": "App\\Http\\Controllers\\PostsController@edit",
-		"middleware": ["web"]
-	},
-	{
-		"domain": null,
-		"method": "GET|HEAD",
-		"uri": "profile",
-		"name": "profile.edit",
-		"action": "App\\Http\\Controllers\\ProfileController@edit",
-		"middleware": ["web", "App\\Http\\Middleware\\Authenticate"]
-	},
-	{
-		"domain": null,
-		"method": "PATCH",
-		"uri": "profile",
-		"name": "profile.update",
-		"action": "App\\Http\\Controllers\\ProfileController@update",
-		"middleware": ["web", "App\\Http\\Middleware\\Authenticate"]
-	},
-	{
-		"domain": null,
-		"method": "DELETE",
-		"uri": "profile",
-		"name": "profile.destroy",
-		"action": "App\\Http\\Controllers\\ProfileController@destroy",
-		"middleware": ["web", "App\\Http\\Middleware\\Authenticate"]
-	},
-	{
-		"domain": null,
-		"method": "GET|HEAD",
-		"uri": "register",
-		"name": "register",
-		"action": "App\\Http\\Controllers\\Auth\\RegisteredUserController@create",
-		"middleware": ["web", "App\\Http\\Middleware\\RedirectIfAuthenticated"]
-	},
-	{
-		"domain": null,
-		"method": "POST",
-		"uri": "register",
-		"name": null,
-		"action": "App\\Http\\Controllers\\Auth\\RegisteredUserController@store",
-		"middleware": ["web", "App\\Http\\Middleware\\RedirectIfAuthenticated"]
-	},
-	{
-		"domain": null,
-		"method": "POST",
-		"uri": "reset-password",
-		"name": "password.store",
-		"action": "App\\Http\\Controllers\\Auth\\NewPasswordController@store",
-		"middleware": ["web", "App\\Http\\Middleware\\RedirectIfAuthenticated"]
-	},
-	{
-		"domain": null,
-		"method": "GET|HEAD",
-		"uri": "reset-password/{token}",
-		"name": "password.reset",
-		"action": "App\\Http\\Controllers\\Auth\\NewPasswordController@create",
-		"middleware": ["web", "App\\Http\\Middleware\\RedirectIfAuthenticated"]
-	},
-	{
-		"domain": null,
-		"method": "GET|HEAD",
-		"uri": "verify-email",
-		"name": "verification.notice",
-		"action": "App\\Http\\Controllers\\Auth\\EmailVerificationPromptController@__invoke",
-		"middleware": ["web", "App\\Http\\Middleware\\Authenticate"]
-	},
-	{
-		"domain": null,
-		"method": "GET|HEAD",
-		"uri": "verify-email/{id}/{hash}",
-		"name": "verification.verify",
-		"action": "App\\Http\\Controllers\\Auth\\VerifyEmailController@__invoke",
-		"middleware": [
-			"web",
-			"App\\Http\\Middleware\\Authenticate",
-			"App\\Http\\Middleware\\ValidateSignature",
-			"Illuminate\\Routing\\Middleware\\ThrottleRequests:6,1"
-		]
-	}
+  {
+    "domain": null,
+    "method": "GET|HEAD",
+    "uri": "/",
+    "name": null,
+    "action": "Closure",
+    "middleware": ["web"]
+  },
+  {
+    "domain": null,
+    "method": "GET|HEAD",
+    "uri": "api/user",
+    "name": null,
+    "action": "Closure",
+    "middleware": ["api", "App\\Http\\Middleware\\Authenticate:sanctum"]
+  },
+  {
+    "domain": null,
+    "method": "GET|HEAD",
+    "uri": "confirm-password",
+    "name": "password.confirm",
+    "action": "App\\Http\\Controllers\\Auth\\ConfirmablePasswordController@show",
+    "middleware": ["web", "App\\Http\\Middleware\\Authenticate"]
+  },
+  {
+    "domain": null,
+    "method": "POST",
+    "uri": "confirm-password",
+    "name": null,
+    "action": "App\\Http\\Controllers\\Auth\\ConfirmablePasswordController@store",
+    "middleware": ["web", "App\\Http\\Middleware\\Authenticate"]
+  },
+  {
+    "domain": null,
+    "method": "GET|HEAD",
+    "uri": "dashboard",
+    "name": "dashboard",
+    "action": "App\\Http\\Controllers\\DashboardController",
+    "middleware": [
+      "web",
+      "App\\Http\\Middleware\\Authenticate",
+      "Illuminate\\Auth\\Middleware\\EnsureEmailIsVerified"
+    ]
+  },
+  {
+    "domain": null,
+    "method": "POST",
+    "uri": "email/verification-notification",
+    "name": "verification.send",
+    "action": "App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController@store",
+    "middleware": [
+      "web",
+      "App\\Http\\Middleware\\Authenticate",
+      "Illuminate\\Routing\\Middleware\\ThrottleRequests:6,1"
+    ]
+  },
+  {
+    "domain": null,
+    "method": "GET|HEAD",
+    "uri": "forgot-password",
+    "name": "password.request",
+    "action": "App\\Http\\Controllers\\Auth\\PasswordResetLinkController@create",
+    "middleware": ["web", "App\\Http\\Middleware\\RedirectIfAuthenticated"]
+  },
+  {
+    "domain": null,
+    "method": "POST",
+    "uri": "forgot-password",
+    "name": "password.email",
+    "action": "App\\Http\\Controllers\\Auth\\PasswordResetLinkController@store",
+    "middleware": ["web", "App\\Http\\Middleware\\RedirectIfAuthenticated"]
+  },
+  {
+    "domain": null,
+    "method": "GET|HEAD",
+    "uri": "login",
+    "name": "login",
+    "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@create",
+    "middleware": ["web", "App\\Http\\Middleware\\RedirectIfAuthenticated"]
+  },
+  {
+    "domain": null,
+    "method": "POST",
+    "uri": "login",
+    "name": null,
+    "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@store",
+    "middleware": ["web", "App\\Http\\Middleware\\RedirectIfAuthenticated"]
+  },
+  {
+    "domain": null,
+    "method": "POST",
+    "uri": "logout",
+    "name": "logout",
+    "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@destroy",
+    "middleware": ["web", "App\\Http\\Middleware\\Authenticate"]
+  },
+  {
+    "domain": null,
+    "method": "PUT",
+    "uri": "password",
+    "name": "password.update",
+    "action": "App\\Http\\Controllers\\Auth\\PasswordController@update",
+    "middleware": ["web", "App\\Http\\Middleware\\Authenticate"]
+  },
+  {
+    "domain": null,
+    "method": "GET|HEAD",
+    "uri": "posts",
+    "name": "posts.index",
+    "action": "App\\Http\\Controllers\\PostsController@index",
+    "middleware": ["web"]
+  },
+  {
+    "domain": null,
+    "method": "POST",
+    "uri": "posts",
+    "name": "posts.store",
+    "action": "App\\Http\\Controllers\\PostsController@store",
+    "middleware": ["web"]
+  },
+  {
+    "domain": null,
+    "method": "GET|HEAD",
+    "uri": "posts/create",
+    "name": "posts.create",
+    "action": "App\\Http\\Controllers\\PostsController@create",
+    "middleware": ["web"]
+  },
+  {
+    "domain": null,
+    "method": "GET|HEAD",
+    "uri": "posts/{post}",
+    "name": "posts.show",
+    "action": "App\\Http\\Controllers\\PostsController@show",
+    "middleware": ["web"]
+  },
+  {
+    "domain": null,
+    "method": "PUT|PATCH",
+    "uri": "posts/{post}",
+    "name": "posts.update",
+    "action": "App\\Http\\Controllers\\PostsController@update",
+    "middleware": ["web"]
+  },
+  {
+    "domain": null,
+    "method": "DELETE",
+    "uri": "posts/{post}",
+    "name": "posts.destroy",
+    "action": "App\\Http\\Controllers\\PostsController@destroy",
+    "middleware": ["web"]
+  },
+  {
+    "domain": null,
+    "method": "GET|HEAD",
+    "uri": "posts/{post}/edit",
+    "name": "posts.edit",
+    "action": "App\\Http\\Controllers\\PostsController@edit",
+    "middleware": ["web"]
+  },
+  {
+    "domain": null,
+    "method": "GET|HEAD",
+    "uri": "profile",
+    "name": "profile.edit",
+    "action": "App\\Http\\Controllers\\ProfileController@edit",
+    "middleware": ["web", "App\\Http\\Middleware\\Authenticate"]
+  },
+  {
+    "domain": null,
+    "method": "PATCH",
+    "uri": "profile",
+    "name": "profile.update",
+    "action": "App\\Http\\Controllers\\ProfileController@update",
+    "middleware": ["web", "App\\Http\\Middleware\\Authenticate"]
+  },
+  {
+    "domain": null,
+    "method": "DELETE",
+    "uri": "profile",
+    "name": "profile.destroy",
+    "action": "App\\Http\\Controllers\\ProfileController@destroy",
+    "middleware": ["web", "App\\Http\\Middleware\\Authenticate"]
+  },
+  {
+    "domain": null,
+    "method": "GET|HEAD",
+    "uri": "register",
+    "name": "register",
+    "action": "App\\Http\\Controllers\\Auth\\RegisteredUserController@create",
+    "middleware": ["web", "App\\Http\\Middleware\\RedirectIfAuthenticated"]
+  },
+  {
+    "domain": null,
+    "method": "POST",
+    "uri": "register",
+    "name": null,
+    "action": "App\\Http\\Controllers\\Auth\\RegisteredUserController@store",
+    "middleware": ["web", "App\\Http\\Middleware\\RedirectIfAuthenticated"]
+  },
+  {
+    "domain": null,
+    "method": "POST",
+    "uri": "reset-password",
+    "name": "password.store",
+    "action": "App\\Http\\Controllers\\Auth\\NewPasswordController@store",
+    "middleware": ["web", "App\\Http\\Middleware\\RedirectIfAuthenticated"]
+  },
+  {
+    "domain": null,
+    "method": "GET|HEAD",
+    "uri": "reset-password/{token}",
+    "name": "password.reset",
+    "action": "App\\Http\\Controllers\\Auth\\NewPasswordController@create",
+    "middleware": ["web", "App\\Http\\Middleware\\RedirectIfAuthenticated"]
+  },
+  {
+    "domain": null,
+    "method": "GET|HEAD",
+    "uri": "verify-email",
+    "name": "verification.notice",
+    "action": "App\\Http\\Controllers\\Auth\\EmailVerificationPromptController@__invoke",
+    "middleware": ["web", "App\\Http\\Middleware\\Authenticate"]
+  },
+  {
+    "domain": null,
+    "method": "GET|HEAD",
+    "uri": "verify-email/{id}/{hash}",
+    "name": "verification.verify",
+    "action": "App\\Http\\Controllers\\Auth\\VerifyEmailController@__invoke",
+    "middleware": [
+      "web",
+      "App\\Http\\Middleware\\Authenticate",
+      "App\\Http\\Middleware\\ValidateSignature",
+      "Illuminate\\Routing\\Middleware\\ThrottleRequests:6,1"
+    ]
+  }
 ]

@@ -12,28 +12,28 @@ const confirmingUserDeletion = ref(false);
 const passwordInput = ref<HTMLInputElement | null>(null);
 
 const form = useForm({
-	password: "",
+  password: "",
 });
 
 const confirmUserDeletion = () => {
-	confirmingUserDeletion.value = true;
+  confirmingUserDeletion.value = true;
 
-	nextTick(() => passwordInput?.value?.focus());
+  nextTick(() => passwordInput?.value?.focus());
 };
 
 const deleteUser = () => {
-	form.delete(route("profile.destroy"), {
-		preserveScroll: true,
-		onSuccess: () => closeModal(),
-		onError: () => passwordInput?.value?.focus(),
-		onFinish: () => form.reset(),
-	});
+  form.delete(route("profile.destroy"), {
+    preserveScroll: true,
+    onSuccess: () => closeModal(),
+    onError: () => passwordInput?.value?.focus(),
+    onFinish: () => form.reset(),
+  });
 };
 
 const closeModal = () => {
-	confirmingUserDeletion.value = false;
+  confirmingUserDeletion.value = false;
 
-	form.reset();
+  form.reset();
 };
 </script>
 

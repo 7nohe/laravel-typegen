@@ -6,8 +6,8 @@ import UpdatePasswordForm from "./Partials/UpdatePasswordForm.vue";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm.vue";
 
 defineProps({
-	mustVerifyEmail: Boolean,
-	status: String,
+  mustVerifyEmail: Boolean,
+  status: String,
 });
 </script>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { type = "button" } = defineProps<{
-	type: "submit" | "button" | "reset" | undefined;
+  type: "submit" | "button" | "reset" | undefined;
 }>();
 </script>
 

@@ -8,20 +8,20 @@ import GuestLayout from "@/Layouts/GuestLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 
 defineProps({
-	canResetPassword: Boolean,
-	status: String,
+  canResetPassword: Boolean,
+  status: String,
 });
 
 const form = useForm({
-	email: "",
-	password: "",
-	remember: false,
+  email: "",
+  password: "",
+  remember: false,
 });
 
 const submit = () => {
-	form.post(route("login"), {
-		onFinish: () => form.reset("password"),
-	});
+  form.post(route("login"), {
+    onFinish: () => form.reset("password"),
+  });
 };
 </script>
 
