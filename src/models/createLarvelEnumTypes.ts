@@ -49,7 +49,7 @@ export const createEnumType = (enumFilePath: string) => {
   ).map((declaration) => declaration.constants.at(0)) as Constant[];
 
   return ts.factory.createEnumDeclaration(
-    undefined,
+    [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
     ts.factory.createIdentifier(className),
     constants.map((constant) =>
       ts.factory.createEnumMember(
